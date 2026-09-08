@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { projects, statusLabel, ui } from "@/lib/content";
-import { artAccent, projectArt, projectScreens, screenLabels, screenSrc } from "@/lib/art";
+import { allShots, artAccent, projectArt, projectScreens, screenSrc } from "@/lib/art";
 import { useStore } from "@/lib/store";
 import Section from "./Section";
 import PhoneShowcase from "./PhoneShowcase";
@@ -18,11 +18,13 @@ export default function Quests() {
   const { t, lang, unlock } = useStore();
   const [open, setOpen] = useState<string | null>(projects[0].id);
   const [active, setActive] = useState(projects[0].id);
-  const [screen, setScreen] = useState(0);
+  const [tab, setTab] = useState(0);
+  const [part, setPart] = useState(0);
 
   const artKey = ART[active] ?? "pethub";
-  const shots = projectScreens[artKey] ?? [];
-  const labels = screenLabels[artKey] ?? [];
+  const screens = projectScreens[artKey] ?? [];
+  const parts = screens[tab]?.parts ?? [];
+  const en = lang === "en";
 
   return (
     <Section id="projects" index="03" title={ui.sectionProjects}>
@@ -37,7 +39,8 @@ export default function Quests() {
                 data-spotlight
                 onMouseEnter={() => {
                   setActive(p.id);
-                  setScreen(0);
+                  setTab(0);
+                  setPart(0);
                 }}
                 className={`gradient-border reveal overflow-hidden rounded-2xl border bg-bg-2/70 transition-colors ${
                   expanded ? "border-transparent" : "border-line"
@@ -50,7 +53,8 @@ export default function Quests() {
                   onClick={() => {
                     setOpen(expanded ? null : p.id);
                     setActive(p.id);
-                    setScreen(0);
+                    setTab(0);
+                    setPart(0);
                     unlock("questlog");
                   }}
                   className="flex w-full items-start gap-4 p-5 text-left sm:p-6"
@@ -118,8 +122,8 @@ export default function Quests() {
                         {/* flat art on small screens, where the 3D column is hidden */}
                         <div className="mb-5 flex justify-center lg:hidden" aria-hidden>
                           {screenSrc(ART[p.id]) ? (
-                            <span className="flex gap-3 overflow-x-auto pb-2">
-                              {(projectScreens[ART[p.id]] ?? []).map((src) => (
+                            <span className="thin-scroll flex gap-3 overflow-x-auto pb-2">
+                              {allShots(ART[p.id]).map((src) => (
                                 // eslint-disable-next-line @next/next/no-img-element
                                 <img
                                   key={src}
@@ -187,23 +191,46 @@ export default function Quests() {
         <div className="reveal hidden lg:block">
           <div className="sticky top-24">
             <div className="h-[540px]">
-              <PhoneShowcase artKey={artKey} screen={screen} />
+              <PhoneShowcase artKey={artKey} tab={tab} part={part} />
             </div>
-            {shots.length > 1 && (
-              <div className="mt-2 flex flex-wrap justify-center gap-1.5">
-                {shots.map((_, i) => (
+
+            {screens.length > 1 && (
+              <div className="mt-3 flex flex-wrap justify-center gap-1.5">
+                {screens.map((s, i) => (
                   <button
-                    key={i}
+                    key={s.tab}
                     type="button"
-                    onClick={() => setScreen(i)}
+                    onClick={() => {
+                      setTab(i);
+                      setPart(0);
+                    }}
                     className={`rounded-full border px-2.5 py-1 font-mono text-[10px] transition-colors ${
-                      screen === i
+                      tab === i
                         ? "border-acid bg-acid/15 text-acid"
                         : "border-line text-muted hover:text-fg"
                     }`}
                   >
-                    {labels[i] ?? i + 1}
+                    {s.tab}
                   </button>
+                ))}
+              </div>
+            )}
+
+            {parts.length > 1 && (
+              <div className="mt-2 flex items-center justify-center gap-2">
+                <span className="font-mono text-[10px] text-muted/70">
+                  {en ? "scroll" : "下滑"}
+                </span>
+                {parts.map((_, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    aria-label={`${en ? "Scroll position" : "滚动位置"} ${i + 1}`}
+                    onClick={() => setPart(i)}
+                    className={`h-1.5 rounded-full transition-all ${
+                      part === i ? "w-6 bg-acid" : "w-1.5 bg-line hover:bg-muted"
+                    }`}
+                  />
                 ))}
               </div>
             )}

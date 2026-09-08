@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { projectArt, screenSrc } from "@/lib/art";
 
 type Api = {
-  setArt: (key: string, idx?: number) => void;
+  setArt: (key: string, tab?: number, part?: number) => void;
   dispose: () => void;
 };
 
@@ -13,7 +13,15 @@ type Api = {
  * no drei. three is dynamically imported only once the section is close to
  * the viewport, so it never touches the initial bundle.
  */
-export default function PhoneShowcase({ artKey, screen = 0 }: { artKey: string; screen?: number }) {
+export default function PhoneShowcase({
+  artKey,
+  tab = 0,
+  part = 0,
+}: {
+  artKey: string;
+  tab?: number;
+  part?: number;
+}) {
   const mountRef = useRef<HTMLDivElement>(null);
   const apiRef = useRef<Api | null>(null);
   const [ready, setReady] = useState(false);
@@ -136,9 +144,9 @@ export default function PhoneShowcase({ artKey, screen = 0 }: { artKey: string; 
       screenMat.needsUpdate = true;
 
       let flash = 0;
-      const setArt = (k: string, idx = 0) => {
+      const setArt = (k: string, tabIdx = 0, partIdx = 0) => {
         if (!ctx) return;
-        const photo = screenSrc(k, idx);
+        const photo = screenSrc(k, tabIdx, partIdx);
         const svg = projectArt[k];
         if (!photo && !svg) return;
 
@@ -240,7 +248,7 @@ export default function PhoneShowcase({ artKey, screen = 0 }: { artKey: string; 
       };
       raf = requestAnimationFrame(tick);
 
-      setArt(artKey, screen);
+      setArt(artKey, tab, part);
       setReady(true);
 
       apiRef.current = {
@@ -278,8 +286,8 @@ export default function PhoneShowcase({ artKey, screen = 0 }: { artKey: string; 
   }, []);
 
   useEffect(() => {
-    apiRef.current?.setArt(artKey, screen);
-  }, [artKey, screen]);
+    apiRef.current?.setArt(artKey, tab, part);
+  }, [artKey, tab, part]);
 
   return (
     <div className="relative h-full w-full">
@@ -291,10 +299,10 @@ export default function PhoneShowcase({ artKey, screen = 0 }: { artKey: string; 
           className="pointer-events-none absolute inset-0 grid place-items-center p-6"
           aria-hidden
         >
-          {screenSrc(artKey, screen) ? (
+          {screenSrc(artKey, tab, part) ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
-              src={screenSrc(artKey, screen) as string}
+              src={screenSrc(artKey, tab, part) as string}
               alt=""
               className="h-full max-h-[420px] w-auto rounded-[26px] border border-line object-cover"
             />

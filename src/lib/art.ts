@@ -269,31 +269,38 @@ export const projectArt: Record<string, string> = {
 
 /**
  * Real screenshots of the shipped apps, with every figure swapped for demo
- * data. Anything listed here wins over the procedural art above — on the
- * cards and on the 3D phone alike.
+ * data. These mirror the app's actual structure: one entry per bottom-nav
+ * tab, and `parts` are that same page scrolled further down — not separate
+ * screens.
  */
-export const projectScreens: Record<string, string[]> = {
+export type AppScreen = { tab: string; parts: string[] };
+
+export const projectScreens: Record<string, AppScreen[]> = {
   savvypiggy: [
-    "./savvypiggy-home.jpg",
-    "./savvypiggy-history.jpg",
-    "./savvypiggy-strategy.jpg",
-    "./savvypiggy-goals.jpg",
-    "./savvypiggy-report.jpg",
-    "./savvypiggy-alloc.jpg",
-    "./savvypiggy-pacing.jpg",
+    { tab: "Home", parts: ["./savvypiggy-home.jpg"] },
+    { tab: "History", parts: ["./savvypiggy-history.jpg"] },
+    { tab: "Strategy", parts: ["./savvypiggy-strategy.jpg", "./savvypiggy-goals.jpg"] },
+    {
+      tab: "Report",
+      parts: [
+        "./savvypiggy-report.jpg",
+        "./savvypiggy-alloc.jpg",
+        "./savvypiggy-pacing.jpg",
+      ],
+    },
   ],
-  dividend: ["./dividend-home.jpg"],
+  dividend: [{ tab: "Home", parts: ["./dividend-home.jpg"] }],
 };
 
-export const screenLabels: Record<string, string[]> = {
-  savvypiggy: ["Home", "History", "Strategy", "Goals", "Report", "Split", "Pacing"],
-  dividend: ["Live"],
-};
+export function screenSrc(key: string, tab = 0, part = 0): string | null {
+  const screens = projectScreens[key];
+  if (!screens || !screens.length) return null;
+  const s = screens[Math.min(tab, screens.length - 1)];
+  return s.parts[Math.min(part, s.parts.length - 1)] ?? null;
+}
 
-export function screenSrc(key: string, i = 0): string | null {
-  const list = projectScreens[key];
-  if (!list || !list.length) return null;
-  return list[Math.min(i, list.length - 1)];
+export function allShots(key: string): string[] {
+  return (projectScreens[key] ?? []).flatMap((s) => s.parts);
 }
 
 export const artAccent: Record<string, string> = {
