@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { projects, statusLabel, ui } from "@/lib/content";
-import { artAccent, projectArt, projectPhoto } from "@/lib/art";
+import { artAccent, projectArt, projectScreens, screenLabels, screenSrc } from "@/lib/art";
 import { useStore } from "@/lib/store";
 import Section from "./Section";
 import PhoneShowcase from "./PhoneShowcase";
@@ -18,8 +18,11 @@ export default function Quests() {
   const { t, lang, unlock } = useStore();
   const [open, setOpen] = useState<string | null>(projects[0].id);
   const [active, setActive] = useState(projects[0].id);
+  const [screen, setScreen] = useState(0);
 
   const artKey = ART[active] ?? "pethub";
+  const shots = projectScreens[artKey] ?? [];
+  const labels = screenLabels[artKey] ?? [];
 
   return (
     <Section id="projects" index="03" title={ui.sectionProjects}>
@@ -32,7 +35,10 @@ export default function Quests() {
               <li
                 key={p.id}
                 data-spotlight
-                onMouseEnter={() => setActive(p.id)}
+                onMouseEnter={() => {
+                  setActive(p.id);
+                  setScreen(0);
+                }}
                 className={`gradient-border reveal overflow-hidden rounded-2xl border bg-bg-2/70 transition-colors ${
                   expanded ? "border-transparent" : "border-line"
                 }`}
@@ -44,6 +50,7 @@ export default function Quests() {
                   onClick={() => {
                     setOpen(expanded ? null : p.id);
                     setActive(p.id);
+                    setScreen(0);
                     unlock("questlog");
                   }}
                   className="flex w-full items-start gap-4 p-5 text-left sm:p-6"
@@ -110,13 +117,18 @@ export default function Quests() {
                       <div className="border-t border-line/60 px-5 pb-5 pt-4 sm:px-6 sm:pb-6">
                         {/* flat art on small screens, where the 3D column is hidden */}
                         <div className="mb-5 flex justify-center lg:hidden" aria-hidden>
-                          {projectPhoto[ART[p.id]] ? (
-                            // eslint-disable-next-line @next/next/no-img-element
-                            <img
-                              src={projectPhoto[ART[p.id]]}
-                              alt=""
-                              className="h-[320px] w-auto rounded-2xl border border-line"
-                            />
+                          {screenSrc(ART[p.id]) ? (
+                            <span className="flex gap-3 overflow-x-auto pb-2">
+                              {(projectScreens[ART[p.id]] ?? []).map((src) => (
+                                // eslint-disable-next-line @next/next/no-img-element
+                                <img
+                                  key={src}
+                                  src={src}
+                                  alt=""
+                                  className="h-[320px] w-auto shrink-0 rounded-2xl border border-line"
+                                />
+                              ))}
+                            </span>
                           ) : (
                             <span
                               dangerouslySetInnerHTML={{
@@ -173,8 +185,28 @@ export default function Quests() {
         </ul>
 
         <div className="reveal hidden lg:block">
-          <div className="sticky top-24 h-[540px]">
-            <PhoneShowcase artKey={artKey} />
+          <div className="sticky top-24">
+            <div className="h-[540px]">
+              <PhoneShowcase artKey={artKey} screen={screen} />
+            </div>
+            {shots.length > 1 && (
+              <div className="mt-2 flex flex-wrap justify-center gap-1.5">
+                {shots.map((_, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    onClick={() => setScreen(i)}
+                    className={`rounded-full border px-2.5 py-1 font-mono text-[10px] transition-colors ${
+                      screen === i
+                        ? "border-acid bg-acid/15 text-acid"
+                        : "border-line text-muted hover:text-fg"
+                    }`}
+                  >
+                    {labels[i] ?? i + 1}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>

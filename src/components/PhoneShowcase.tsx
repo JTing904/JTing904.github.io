@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { projectArt, projectPhoto } from "@/lib/art";
+import { projectArt, screenSrc } from "@/lib/art";
 
 type Api = {
-  setArt: (key: string) => void;
+  setArt: (key: string, idx?: number) => void;
   dispose: () => void;
 };
 
@@ -13,7 +13,7 @@ type Api = {
  * no drei. three is dynamically imported only once the section is close to
  * the viewport, so it never touches the initial bundle.
  */
-export default function PhoneShowcase({ artKey }: { artKey: string }) {
+export default function PhoneShowcase({ artKey, screen = 0 }: { artKey: string; screen?: number }) {
   const mountRef = useRef<HTMLDivElement>(null);
   const apiRef = useRef<Api | null>(null);
   const [ready, setReady] = useState(false);
@@ -88,9 +88,9 @@ export default function PhoneShowcase({ artKey }: { artKey: string }) {
 
       // --- screen ---
       const screenMat = new THREE.MeshBasicMaterial({ color: 0xffffff, toneMapped: false });
-      const screen = new THREE.Mesh(new THREE.PlaneGeometry(1.5, 3.16), screenMat);
-      screen.position.z = 0.0885;
-      group.add(screen);
+      const screenMesh = new THREE.Mesh(new THREE.PlaneGeometry(1.5, 3.16), screenMat);
+      screenMesh.position.z = 0.0885;
+      group.add(screenMesh);
 
       // camera bump + side buttons for believability
       const lens = new THREE.Mesh(
@@ -136,9 +136,9 @@ export default function PhoneShowcase({ artKey }: { artKey: string }) {
       screenMat.needsUpdate = true;
 
       let flash = 0;
-      const setArt = (k: string) => {
+      const setArt = (k: string, idx = 0) => {
         if (!ctx) return;
-        const photo = projectPhoto[k];
+        const photo = screenSrc(k, idx);
         const svg = projectArt[k];
         if (!photo && !svg) return;
 
@@ -240,7 +240,7 @@ export default function PhoneShowcase({ artKey }: { artKey: string }) {
       };
       raf = requestAnimationFrame(tick);
 
-      setArt(artKey);
+      setArt(artKey, screen);
       setReady(true);
 
       apiRef.current = {
@@ -278,8 +278,8 @@ export default function PhoneShowcase({ artKey }: { artKey: string }) {
   }, []);
 
   useEffect(() => {
-    apiRef.current?.setArt(artKey);
-  }, [artKey]);
+    apiRef.current?.setArt(artKey, screen);
+  }, [artKey, screen]);
 
   return (
     <div className="relative h-full w-full">
@@ -291,10 +291,10 @@ export default function PhoneShowcase({ artKey }: { artKey: string }) {
           className="pointer-events-none absolute inset-0 grid place-items-center p-6"
           aria-hidden
         >
-          {projectPhoto[artKey] ? (
+          {screenSrc(artKey, screen) ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
-              src={projectPhoto[artKey]}
+              src={screenSrc(artKey, screen) as string}
               alt=""
               className="h-full max-h-[420px] w-auto rounded-[26px] border border-line object-cover"
             />

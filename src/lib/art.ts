@@ -268,12 +268,33 @@ export const projectArt: Record<string, string> = {
 };
 
 /**
- * Real screenshots, where they exist. Anything listed here wins over the
- * procedural art above — both on the cards and on the 3D phone.
+ * Real screenshots of the shipped apps, with every figure swapped for demo
+ * data. Anything listed here wins over the procedural art above — on the
+ * cards and on the 3D phone alike.
  */
-export const projectPhoto: Record<string, string> = {
-  savvypiggy: "./savvypiggy-home.jpg",
+export const projectScreens: Record<string, string[]> = {
+  savvypiggy: [
+    "./savvypiggy-home.jpg",
+    "./savvypiggy-history.jpg",
+    "./savvypiggy-strategy.jpg",
+    "./savvypiggy-goals.jpg",
+    "./savvypiggy-report.jpg",
+    "./savvypiggy-alloc.jpg",
+    "./savvypiggy-pacing.jpg",
+  ],
+  dividend: ["./dividend-home.jpg"],
 };
+
+export const screenLabels: Record<string, string[]> = {
+  savvypiggy: ["Home", "History", "Strategy", "Goals", "Report", "Split", "Pacing"],
+  dividend: ["Live"],
+};
+
+export function screenSrc(key: string, i = 0): string | null {
+  const list = projectScreens[key];
+  if (!list || !list.length) return null;
+  return list[Math.min(i, list.length - 1)];
+}
 
 export const artAccent: Record<string, string> = {
   pethub: "#8A6FD1",
