@@ -1,0 +1,232 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: oklch(0.145 0.015 265);
+  --color-bg-2: oklch(0.185 0.02 265);
+  --color-surface: oklch(0.215 0.022 265);
+  --color-line: oklch(0.32 0.025 265);
+  --color-fg: oklch(0.96 0.008 265);
+  --color-muted: oklch(0.68 0.02 265);
+  --color-acid: oklch(0.84 0.19 145);
+  --color-violet: oklch(0.72 0.19 300);
+  --color-amber: oklch(0.83 0.16 82);
+  --color-danger: oklch(0.68 0.2 25);
+
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+:root {
+  color-scheme: dark;
+  --grid: color-mix(in oklch, var(--color-line) 42%, transparent);
+}
+
+/* ---------- Recruiter mode: light, calm, printable ---------- */
+:root[data-mode="recruiter"] {
+  color-scheme: light;
+  --color-bg: oklch(0.995 0.002 265);
+  --color-bg-2: oklch(0.975 0.004 265);
+  --color-surface: oklch(1 0 0);
+  --color-line: oklch(0.9 0.008 265);
+  --color-fg: oklch(0.22 0.02 265);
+  --color-muted: oklch(0.5 0.02 265);
+  --color-acid: oklch(0.55 0.15 158);
+  --color-violet: oklch(0.5 0.18 285);
+  --grid: transparent;
+}
+
+* {
+  min-width: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  transition: background 0.5s var(--ease-out-quint), color 0.5s var(--ease-out-quint);
+}
+
+::selection {
+  background: color-mix(in oklch, var(--color-acid) 40%, transparent);
+  color: var(--color-fg);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-acid);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ---------- View Transitions API (mode + language switching) ---------- */
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root) {
+  animation: vt-out 260ms var(--ease-out-quint) both;
+}
+::view-transition-new(root) {
+  animation: vt-in 380ms var(--ease-out-quint) both;
+}
+
+@keyframes vt-out {
+  to {
+    opacity: 0;
+    filter: blur(6px);
+  }
+}
+@keyframes vt-in {
+  from {
+    opacity: 0;
+    filter: blur(10px);
+    transform: scale(1.01);
+  }
+}
+
+/* ---------- Scroll-driven reveal (native, with JS-free fallback) ---------- */
+.reveal {
+  opacity: 1;
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal {
+      animation: reveal-up linear both;
+      animation-timeline: view();
+      animation-range: entry 8% cover 26%;
+    }
+  }
+}
+
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Section progress bar driven purely by scroll */
+@supports (animation-timeline: scroll()) {
+  .scroll-progress {
+    animation: grow-x linear both;
+    animation-timeline: scroll(root block);
+    transform-origin: 0 50%;
+  }
+}
+
+@keyframes grow-x {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* ---------- Decorative ---------- */
+.grid-bg {
+  background-image: linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 20%, transparent 75%);
+}
+
+.scanlines::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    color-mix(in oklch, var(--color-acid) 5%, transparent) 0 1px,
+    transparent 1px 3px
+  );
+  opacity: 0.5;
+  border-radius: inherit;
+}
+
+.glow-acid {
+  box-shadow: 0 0 0 1px color-mix(in oklch, var(--color-acid) 35%, transparent),
+    0 0 34px -8px color-mix(in oklch, var(--color-acid) 55%, transparent);
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+.text-pretty {
+  text-wrap: pretty;
+}
+
+.caret::after {
+  content: "";
+  display: inline-block;
+  width: 0.55em;
+  height: 1.05em;
+  margin-left: 2px;
+  vertical-align: -0.18em;
+  background: var(--color-acid);
+  animation: blink 1.05s steps(1) infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes float-y {
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+/* thin scrollbar inside the terminal */
+.thin-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-line) transparent;
+}
+
+/* ---------- Print (recruiter mode → clean PDF) ---------- */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  html,
+  body {
+    background: #fff !important;
+    color: #111 !important;
+  }
+  main {
+    padding: 0 !important;
+  }
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.75em;
+    color: #555;
+  }
+}
