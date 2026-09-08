@@ -14,7 +14,7 @@ export default function Contact() {
   ];
 
   return (
-    <Section id="contact" index="06" title={ui.sectionContact}>
+    <Section id="contact" index="08" title={ui.sectionContact}>
       <div className="reveal overflow-hidden rounded-2xl border border-line bg-bg-2/70">
         <div className="border-b border-line/70 px-5 py-3 font-mono text-[11px] text-muted">
           $ cat contact.json

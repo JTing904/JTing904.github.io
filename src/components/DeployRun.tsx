@@ -352,7 +352,7 @@ export default function DeployRun() {
   const en = lang === "en";
 
   return (
-    <Section id="play" index="05" title={ui.sectionPlay}>
+    <Section id="play" index="07" title={ui.sectionPlay}>
       <div className="reveal overflow-hidden rounded-2xl border border-line bg-bg-2/70">
         <div className="flex items-center justify-between border-b border-line/70 px-4 py-2.5 font-mono text-[11px]">
           <span className="text-muted">

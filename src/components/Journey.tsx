@@ -18,7 +18,7 @@ export default function Journey() {
       <ol className="relative grid gap-4 pl-7 sm:pl-9">
         <span
           aria-hidden
-          className="absolute left-[10px] top-2 bottom-2 w-px bg-gradient-to-b from-acid via-violet to-transparent sm:left-3"
+          className="draw-line absolute left-[10px] top-2 bottom-2 w-px bg-gradient-to-b from-acid via-violet to-transparent sm:left-3"
         />
         {timeline.map((item) => {
           const k = KIND[item.kind];

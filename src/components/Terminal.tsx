@@ -1,9 +1,10 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { motion } from "motion/react";
+import { motion, useScroll, useTransform } from "motion/react";
 import { profile, ui, type L } from "@/lib/content";
 import { useStore } from "@/lib/store";
+import ShaderBackground from "./fx/ShaderBackground";
 
 type Line = { id: number; text: string; tone?: "muted" | "acid" | "violet" | "danger" };
 
@@ -27,6 +28,17 @@ export default function Terminal() {
   const [histIdx, setHistIdx] = useState(-1);
   const bodyRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  // the hero recedes as the page scrolls past it
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+  const heroScale = useTransform(scrollYProgress, [0, 1], [1, 0.92]);
+  const heroY = useTransform(scrollYProgress, [0, 1], [0, 70]);
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.9], [1, 0]);
+  const heroBlur = useTransform(scrollYProgress, [0, 1], ["blur(0px)", "blur(5px)"]);
 
   // Boot sequence types itself out on first load; a later language switch
   // just re-renders the same lines instantly rather than replaying the show.
@@ -155,19 +167,25 @@ export default function Terminal() {
 
   return (
     <section
+      ref={sectionRef}
       id="top"
       className="relative scroll-mt-16 overflow-hidden px-4 pt-8 pb-6 sm:px-6 sm:pt-14 sm:pb-10"
     >
-      <div
-        aria-hidden
-        className="grid-bg pointer-events-none absolute inset-x-0 top-0 h-[520px]"
-      />
-      <div className="relative mx-auto max-w-5xl">
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 -top-14 h-[760px]">
+        <ShaderBackground />
+        <div className="grid-bg absolute inset-0 opacity-60" />
+        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-bg" />
+      </div>
+      <motion.div
+        style={{ scale: heroScale, y: heroY, opacity: heroOpacity, filter: heroBlur }}
+        className="relative mx-auto max-w-5xl"
+      >
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          className="scanlines glow-acid relative overflow-hidden rounded-2xl border border-line bg-bg-2/90 backdrop-blur"
+          data-spotlight
+          className="scanlines glow-acid glass relative overflow-hidden rounded-2xl"
         >
           <div className="flex items-center gap-2 border-b border-line/80 px-4 py-2.5">
             <span className="size-2.5 rounded-full bg-danger/70" />
@@ -278,6 +296,7 @@ export default function Terminal() {
                 run(c);
                 inputRef.current?.focus();
               }}
+              data-magnetic
               className="rounded-full border border-line bg-surface/60 px-3 py-1.5 font-mono text-xs text-muted transition-colors hover:border-acid/60 hover:text-acid"
             >
               {c}
@@ -287,7 +306,7 @@ export default function Terminal() {
             {t(ui.clickNode)} · ↑↓ history
           </span>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }

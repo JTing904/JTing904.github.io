@@ -9,6 +9,8 @@ const NAV = [
   { id: "skills", label: ui.nav.skills },
   { id: "projects", label: ui.nav.projects },
   { id: "journey", label: ui.nav.journey },
+  { id: "github", label: ui.nav.github },
+  { id: "code", label: ui.nav.code },
   { id: "play", label: ui.nav.play },
   { id: "contact", label: ui.nav.contact },
 ];
@@ -28,7 +30,7 @@ export default function Header() {
         </a>
 
         {mode === "play" && (
-          <nav className="ml-2 hidden items-center gap-1 md:flex">
+          <nav className="ml-2 hidden items-center gap-1 lg:flex">
             {NAV.map((n) => (
               <a
                 key={n.id}
@@ -42,6 +44,17 @@ export default function Header() {
         )}
 
         <div className="ml-auto flex items-center gap-2">
+          {mode === "play" && (
+            <button
+              type="button"
+              onClick={() => window.dispatchEvent(new CustomEvent("open-palette"))}
+              className="hidden items-center gap-2 rounded-md border border-line px-2.5 py-1.5 font-mono text-[11px] text-muted transition-colors hover:border-acid/60 hover:text-acid sm:inline-flex"
+              aria-label={lang === "en" ? "Open command palette" : "打开命令面板"}
+            >
+              <span>{lang === "en" ? "Search" : "搜索"}</span>
+              <kbd className="rounded border border-line px-1 py-px text-[10px]">⌘K</kbd>
+            </button>
+          )}
           {mode === "play" && (
             <button
               type="button"
@@ -77,7 +90,7 @@ export default function Header() {
             title={t(mode === "play" ? ui.modeHint : ui.playHint)}
             className="rounded-md border border-line px-3 py-1.5 font-mono text-xs text-fg transition-colors hover:border-acid/70 hover:text-acid"
           >
-            {mode === "play" ? `▤ ${t(ui.recruiterMode)}` : `▶ ${t(ui.playMode)}`}
+            {mode === "play" ? `▤ ${t(ui.recruiterMode)}` : `▸ ${t(ui.playMode)}`}
           </button>
         </div>
       </div>

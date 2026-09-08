@@ -148,6 +148,27 @@ body {
   }
 }
 
+/* A line that draws itself as its container scrolls through the viewport */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .draw-line {
+      animation: grow-y linear both;
+      animation-timeline: view();
+      animation-range: entry 15% cover 65%;
+      transform-origin: 50% 0;
+    }
+  }
+}
+
+@keyframes grow-y {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
 /* ---------- Decorative ---------- */
 .grid-bg {
   background-image: linear-gradient(var(--grid) 1px, transparent 1px),
@@ -209,6 +230,152 @@ body {
 .thin-scroll {
   scrollbar-width: thin;
   scrollbar-color: var(--color-line) transparent;
+}
+
+/* ---------- Custom cursor ---------- */
+.cursor-dot,
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10000;
+  pointer-events: none;
+  border-radius: 999px;
+  will-change: transform;
+  transition: opacity 0.25s;
+  opacity: 0;
+}
+
+.has-custom-cursor .cursor-dot,
+.has-custom-cursor .cursor-ring {
+  opacity: 1;
+}
+
+.cursor-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--color-acid);
+}
+
+.cursor-ring {
+  width: 30px;
+  height: 30px;
+  border: 1px solid color-mix(in oklch, var(--color-acid) 55%, transparent);
+  backdrop-filter: invert(4%);
+}
+
+@media (pointer: fine) {
+  .has-custom-cursor,
+  .has-custom-cursor a,
+  .has-custom-cursor button,
+  .has-custom-cursor [role="button"] {
+    cursor: none;
+  }
+  .has-custom-cursor input,
+  .has-custom-cursor textarea {
+    cursor: text;
+  }
+}
+
+:root[data-mode="recruiter"] .cursor-dot,
+:root[data-mode="recruiter"] .cursor-ring {
+  display: none;
+}
+
+/* ---------- Pointer-tracking spotlight on cards ---------- */
+[data-spotlight] {
+  position: relative;
+  isolation: isolate;
+}
+
+[data-spotlight]::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(
+    340px circle at var(--mx, -300px) var(--my, -300px),
+    color-mix(in oklch, var(--color-acid) 14%, transparent),
+    transparent 62%
+  );
+  opacity: 0;
+  transition: opacity 0.35s var(--ease-out-quint);
+}
+
+[data-spotlight]:hover::before {
+  opacity: 1;
+}
+
+[data-magnetic] {
+  transition: transform 0.35s var(--ease-out-quint);
+  will-change: transform;
+}
+
+/* ---------- Global film grain ---------- */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  pointer-events: none;
+  opacity: 0.045;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/></filter><rect width='140' height='140' filter='url(%23n)' opacity='0.9'/></svg>");
+}
+
+:root[data-mode="recruiter"] body::after {
+  display: none;
+}
+
+/* ---------- Glass surface ---------- */
+.glass {
+  background: color-mix(in oklch, var(--color-bg-2) 90%, transparent);
+  backdrop-filter: blur(18px) saturate(140%);
+  border: 1px solid color-mix(in oklch, var(--color-line) 85%, transparent);
+}
+
+.gradient-border {
+  position: relative;
+}
+.gradient-border::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    color-mix(in oklch, var(--color-acid) 55%, transparent),
+    transparent 40%,
+    color-mix(in oklch, var(--color-violet) 45%, transparent)
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s var(--ease-out-quint);
+}
+.gradient-border:hover::after {
+  opacity: 1;
+}
+
+/* ---------- Code tokens (playground) ---------- */
+.tok-k {
+  color: var(--color-violet);
+}
+.tok-s {
+  color: var(--color-acid);
+}
+.tok-n {
+  color: var(--color-amber);
+}
+.tok-c {
+  color: color-mix(in oklch, var(--color-muted) 80%, transparent);
+  font-style: italic;
 }
 
 /* ---------- Print (recruiter mode → clean PDF) ---------- */

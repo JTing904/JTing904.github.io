@@ -76,11 +76,14 @@ export const branchMeta: Record<SkillNode["branch"], { label: L; color: string }
   concept: { label: { en: "Fundamentals", zh: "基础" }, color: "oklch(0.78 0.12 20)" },
 };
 
+export type ProjectStatus = "shipped" | "coursework" | "wip" | "prototype";
+
 export type Project = {
   id: string;
   name: string;
   year: string;
   rank: L;
+  status: ProjectStatus;
   difficulty: 1 | 2 | 3;
   summary: L;
   bullets: L[];
@@ -88,54 +91,91 @@ export type Project = {
   href?: string;
 };
 
+export const statusLabel: Record<ProjectStatus, L> = {
+  shipped: { en: "Working build", zh: "已能跑" },
+  coursework: { en: "Coursework · submitted", zh: "课程作业 · 已交付" },
+  wip: { en: "In progress", zh: "开发中" },
+  prototype: { en: "Prototype", zh: "原型阶段" },
+};
+
 export const projects: Project[] = [
-  {
-    id: "pethub",
-    name: "PetHub",
-    year: "2026",
-    rank: { en: "Final Year Project", zh: "毕业设计" },
-    difficulty: 3,
-    summary: {
-      en: "Android app for browsing, booking and paying for pet care services.",
-      zh: "一个 Android 应用，用来浏览、预约和支付宠物照护服务。",
-    },
-    bullets: [
-      { en: "Built in Kotlin with an object-oriented design, prototyped in Figma first.", zh: "用 Kotlin 写，面向对象设计，先在 Figma 出原型。" },
-      { en: "Implemented service listings, a booking and checkout flow, and user accounts.", zh: "实现了服务列表、预约与结账流程、用户账户系统。" },
-      { en: "Tested each module before release instead of only at the end.", zh: "每个模块单独测试后才发布，而不是最后一次性测。" },
-    ],
-    stack: ["Kotlin", "Android", "Figma", "SQLite"],
-  },
   {
     id: "savvypiggy",
     name: "SavvyPiggy",
     year: "2026",
-    rank: { en: "Side Quest", zh: "支线项目" },
-    difficulty: 2,
+    rank: { en: "Main Quest", zh: "主线项目" },
+    status: "shipped",
+    difficulty: 3,
     summary: {
-      en: "A personal finance app — tracking spending, budgets and where the money actually goes.",
-      zh: "个人理财应用 —— 记账、预算，以及钱到底花去哪了。",
+      en: "A savings app built around piggy banks and honest debt — a deposit clears what you owe before any of it counts toward a goal.",
+      zh: "以「存钱罐」为核心的储蓄应用 —— 存进去的钱要先还清欠款，剩下的才算进目标。",
     },
     bullets: [
-      { en: "Written in TypeScript, typed end to end.", zh: "TypeScript 全程带类型写。" },
-      { en: "MIT licensed and open on GitHub.", zh: "MIT 协议，GitHub 上开源。" },
+      {
+        en: "Savings split across multiple piggy banks, each with its own goal and progress.",
+        zh: "存款拆成多个存钱罐，每个有独立的目标和进度。",
+      },
+      {
+        en: "Borrowing is first-class data: every deposit settles outstanding debt first, so the headline number never lies to you.",
+        zh: "借款是一等数据：每笔存入先抵扣欠款，所以首页那个数字不会骗自己。",
+      },
+      {
+        en: "History, strategy and report views all read the same model — one source of truth, three lenses.",
+        zh: "历史、策略、报表三个视图共用同一份数据模型 —— 一份真相，三种看法。",
+      },
+      {
+        en: "Written in TypeScript end to end. MIT licensed and open on GitHub.",
+        zh: "全程 TypeScript 带类型写。MIT 协议，GitHub 上开源。",
+      },
     ],
-    stack: ["TypeScript", "React Native"],
+    stack: ["TypeScript", "Android"],
     href: "https://github.com/JTing904/SavvyPiggy",
+  },
+  {
+    id: "pethub",
+    name: "PetHub",
+    year: "2025",
+    rank: { en: "Diploma mini project", zh: "文凭课程项目" },
+    status: "coursework",
+    difficulty: 2,
+    summary: {
+      en: "A pet-care booking app: browse services, open one, fill the form, confirm.",
+      zh: "宠物服务预约 App：浏览服务 → 打开详情 → 填表 → 确认预约。",
+    },
+    bullets: [
+      {
+        en: "Built with Jetpack Compose and Material 3 — declarative UI, no XML layouts.",
+        zh: "用 Jetpack Compose + Material 3 写 —— 声明式 UI，没有一个 XML 布局。",
+      },
+      {
+        en: "Three destinations wired with Navigation Compose: service list, service detail, booking form.",
+        zh: "Navigation Compose 串起三个页面：服务列表、服务详情、预约表单。",
+      },
+      {
+        en: "Booking form holds its state with remember/mutableStateOf and only enables Confirm once every field is filled.",
+        zh: "预约表单用 remember/mutableStateOf 持有状态，三个字段都填了才允许点「确认」。",
+      },
+      {
+        en: "Services come from an in-memory data object — the point of the exercise was the UI and navigation layer, not persistence.",
+        zh: "服务数据来自内存里的一个 data object —— 这个作业练的是 UI 和导航层，不是持久化。",
+      },
+    ],
+    stack: ["Kotlin", "Jetpack Compose", "Material 3", "Navigation"],
   },
   {
     id: "dividend",
     name: "Dividend-Tracker",
     year: "2026",
     rank: { en: "Side Quest", zh: "支线项目" },
+    status: "prototype",
     difficulty: 2,
     summary: {
-      en: "Watch dividends on the stocks you hold update in real time.",
+      en: "Watch the dividends on the stocks you hold update in real time.",
       zh: "实时看着手上持仓股票的股息在跳。",
     },
     bullets: [
       { en: "Kotlin Android client with live-updating figures.", zh: "Kotlin Android 客户端，数字实时刷新。" },
-      { en: "Grew out of wanting a number I could check in two seconds.", zh: "起因就是想两秒内看到那个数字。" },
+      { en: "Started because I wanted a number I could check in two seconds.", zh: "起因就是想两秒内看到那个数字。" },
     ],
     stack: ["Kotlin", "Android"],
     href: "https://github.com/JTing904/Dividend-Tracker",
@@ -206,6 +246,8 @@ export const ui = {
     skills: { en: "Skills", zh: "技能" },
     projects: { en: "Projects", zh: "项目" },
     journey: { en: "Journey", zh: "经历" },
+    github: { en: "GitHub", zh: "GitHub" },
+    code: { en: "Code", zh: "跑代码" },
     play: { en: "Play", zh: "玩一下" },
     contact: { en: "Contact", zh: "联系" },
   },
@@ -225,6 +267,8 @@ export const ui = {
   sectionSkills: { en: "Skill Tree", zh: "技能树" },
   sectionProjects: { en: "Quest Log", zh: "任务日志" },
   sectionJourney: { en: "Journey", zh: "旅程" },
+  sectionGithub: { en: "Live from GitHub", zh: "GitHub 实时数据" },
+  sectionPlayground: { en: "Run My Code", zh: "跑一下我的代码" },
   sectionPlay: { en: "Deploy Run", zh: "上线冲刺" },
   sectionContact: { en: "Contact", zh: "联系方式" },
   selfRated: { en: "self-rated", zh: "自评" },

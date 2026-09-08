@@ -2,111 +2,182 @@
 
 import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { projects, ui } from "@/lib/content";
+import { projects, statusLabel, ui } from "@/lib/content";
+import { artAccent, projectArt, projectPhoto } from "@/lib/art";
 import { useStore } from "@/lib/store";
 import Section from "./Section";
+import PhoneShowcase from "./PhoneShowcase";
+
+const ART: Record<string, string> = {
+  pethub: "pethub",
+  savvypiggy: "savvypiggy",
+  dividend: "dividend",
+};
 
 export default function Quests() {
   const { t, lang, unlock } = useStore();
   const [open, setOpen] = useState<string | null>(projects[0].id);
+  const [active, setActive] = useState(projects[0].id);
+
+  const artKey = ART[active] ?? "pethub";
 
   return (
     <Section id="projects" index="03" title={ui.sectionProjects}>
-      <ul className="grid gap-4">
-        {projects.map((p) => {
-          const expanded = open === p.id;
-          return (
-            <li
-              key={p.id}
-              className={`reveal overflow-hidden rounded-2xl border bg-bg-2/70 transition-colors ${
-                expanded ? "border-acid/45" : "border-line hover:border-line/80"
-              }`}
-            >
-              <button
-                type="button"
-                aria-expanded={expanded}
-                onClick={() => {
-                  setOpen(expanded ? null : p.id);
-                  unlock("questlog");
-                }}
-                className="flex w-full items-start gap-4 p-5 text-left sm:p-6"
+      <div className="grid gap-8 lg:grid-cols-[1fr_340px]">
+        <ul className="grid gap-4">
+          {projects.map((p) => {
+            const expanded = open === p.id;
+            const accent = artAccent[ART[p.id]] ?? "var(--color-acid)";
+            return (
+              <li
+                key={p.id}
+                data-spotlight
+                onMouseEnter={() => setActive(p.id)}
+                className={`gradient-border reveal overflow-hidden rounded-2xl border bg-bg-2/70 transition-colors ${
+                  expanded ? "border-transparent" : "border-line"
+                }`}
+                style={expanded ? { borderColor: `color-mix(in oklch, ${accent} 45%, transparent)` } : undefined}
               >
-                <span
-                  className={`mt-0.5 grid size-9 shrink-0 place-items-center rounded-lg font-mono text-sm transition-colors ${
-                    expanded ? "bg-acid text-bg" : "bg-surface text-muted"
-                  }`}
+                <button
+                  type="button"
+                  aria-expanded={expanded}
+                  onClick={() => {
+                    setOpen(expanded ? null : p.id);
+                    setActive(p.id);
+                    unlock("questlog");
+                  }}
+                  className="flex w-full items-start gap-4 p-5 text-left sm:p-6"
                 >
-                  {expanded ? "−" : "+"}
-                </span>
-
-                <span className="min-w-0 flex-1">
-                  <span className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
-                    <span className="text-lg font-semibold tracking-tight">{p.name}</span>
-                    <span className="rounded-full border border-violet/50 px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-violet">
-                      {t(p.rank)}
-                    </span>
-                    <span className="font-mono text-[11px] text-muted">{p.year}</span>
-                    <span
-                      className="ml-auto font-mono text-[11px] text-amber"
-                      title={lang === "en" ? "Difficulty" : "难度"}
-                    >
-                      {"★".repeat(p.difficulty)}
-                      <span className="text-line">{"★".repeat(3 - p.difficulty)}</span>
-                    </span>
-                  </span>
-                  <span className="mt-2 block text-pretty text-sm text-muted">
-                    {t(p.summary)}
-                  </span>
-                </span>
-              </button>
-
-              <AnimatePresence initial={false}>
-                {expanded && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
-                    className="overflow-hidden"
+                  <span
+                    className="mt-0.5 grid size-9 shrink-0 place-items-center rounded-lg font-mono text-sm transition-colors"
+                    style={
+                      expanded
+                        ? { background: accent, color: "#0b0d14" }
+                        : { background: "var(--color-surface)", color: "var(--color-muted)" }
+                    }
                   >
-                    <div className="border-t border-line/60 px-5 pb-5 pt-4 sm:px-6 sm:pb-6">
-                      <ul className="grid gap-2">
-                        {p.bullets.map((b) => (
-                          <li key={b.en} className="flex gap-2.5 text-sm text-fg/85">
-                            <span className="mt-[7px] size-1.5 shrink-0 rounded-full bg-acid" />
-                            <span className="text-pretty">{t(b)}</span>
-                          </li>
-                        ))}
-                      </ul>
+                    {expanded ? "−" : "+"}
+                  </span>
 
-                      <div className="mt-4 flex flex-wrap items-center gap-1.5">
-                        {p.stack.map((s) => (
-                          <span
-                            key={s}
-                            className="rounded border border-line bg-surface/60 px-2 py-0.5 font-mono text-[11px] text-muted"
-                          >
-                            {s}
-                          </span>
-                        ))}
-                        {p.href && (
-                          <a
-                            href={p.href}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="ml-auto rounded-lg border border-acid/50 px-3 py-1.5 font-mono text-[11px] text-acid transition-colors hover:bg-acid hover:text-bg"
-                          >
-                            {lang === "en" ? "View on GitHub →" : "去 GitHub 看 →"}
-                          </a>
-                        )}
+                  <span className="min-w-0 flex-1">
+                    <span className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+                      <span className="text-lg font-semibold tracking-tight">{p.name}</span>
+                      <span
+                        className="rounded-full border px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider"
+                        style={{ borderColor: `color-mix(in oklch, ${accent} 55%, transparent)`, color: accent }}
+                      >
+                        {t(p.rank)}
+                      </span>
+                      <span
+                        className={`inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 font-mono text-[10px] ${
+                          p.status === "shipped"
+                            ? "bg-acid/15 text-acid"
+                            : p.status === "coursework"
+                              ? "bg-violet/15 text-violet"
+                              : p.status === "wip"
+                                ? "bg-amber/15 text-amber"
+                                : "bg-surface text-muted"
+                        }`}
+                      >
+                        <span className="size-1.5 rounded-full bg-current" />
+                        {t(statusLabel[p.status])}
+                      </span>
+                      <span className="font-mono text-[11px] text-muted">{p.year}</span>
+                      <span
+                        className="ml-auto font-mono text-[11px]"
+                        style={{ color: accent }}
+                        title={lang === "en" ? "Difficulty" : "难度"}
+                      >
+                        {"★".repeat(p.difficulty)}
+                        <span className="text-line">{"★".repeat(3 - p.difficulty)}</span>
+                      </span>
+                    </span>
+                    <span className="mt-2 block text-pretty text-sm text-muted">
+                      {t(p.summary)}
+                    </span>
+                  </span>
+                </button>
+
+                <AnimatePresence initial={false}>
+                  {expanded && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
+                      className="overflow-hidden"
+                    >
+                      <div className="border-t border-line/60 px-5 pb-5 pt-4 sm:px-6 sm:pb-6">
+                        {/* flat art on small screens, where the 3D column is hidden */}
+                        <div className="mb-5 flex justify-center lg:hidden" aria-hidden>
+                          {projectPhoto[ART[p.id]] ? (
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img
+                              src={projectPhoto[ART[p.id]]}
+                              alt=""
+                              className="h-[320px] w-auto rounded-2xl border border-line"
+                            />
+                          ) : (
+                            <span
+                              dangerouslySetInnerHTML={{
+                                __html: (projectArt[ART[p.id]] ?? "").replace(
+                                  "<svg ",
+                                  '<svg class="h-[320px] w-auto rounded-2xl border border-line" ',
+                                ),
+                              }}
+                            />
+                          )}
+                        </div>
+
+                        <ul className="grid gap-2">
+                          {p.bullets.map((b) => (
+                            <li key={b.en} className="flex gap-2.5 text-sm text-fg/85">
+                              <span
+                                className="mt-[7px] size-1.5 shrink-0 rounded-full"
+                                style={{ background: accent }}
+                              />
+                              <span className="text-pretty">{t(b)}</span>
+                            </li>
+                          ))}
+                        </ul>
+
+                        <div className="mt-4 flex flex-wrap items-center gap-1.5">
+                          {p.stack.map((s) => (
+                            <span
+                              key={s}
+                              className="rounded border border-line bg-surface/60 px-2 py-0.5 font-mono text-[11px] text-muted"
+                            >
+                              {s}
+                            </span>
+                          ))}
+                          {p.href && (
+                            <a
+                              href={p.href}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              data-magnetic
+                              className="ml-auto rounded-lg border px-3 py-1.5 font-mono text-[11px] transition-colors"
+                              style={{ borderColor: `color-mix(in oklch, ${accent} 55%, transparent)`, color: accent }}
+                            >
+                              {lang === "en" ? "View on GitHub →" : "去 GitHub 看 →"}
+                            </a>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </li>
-          );
-        })}
-      </ul>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </li>
+            );
+          })}
+        </ul>
+
+        <div className="reveal hidden lg:block">
+          <div className="sticky top-24 h-[540px]">
+            <PhoneShowcase artKey={artKey} />
+          </div>
+        </div>
+      </div>
     </Section>
   );
 }

@@ -23,7 +23,9 @@ export type AchievementId =
   | "runner"
   | "shipped"
   | "konami"
-  | "nightowl";
+  | "nightowl"
+  | "hacker"
+  | "seeker";
 
 export const ACHIEVEMENTS: Record<AchievementId, { icon: string; title: L; desc: L }> = {
   boot: {
@@ -57,7 +59,7 @@ export const ACHIEVEMENTS: Record<AchievementId, { icon: string; title: L; desc:
     desc: { en: "Expanded a project card.", zh: "展开了一张项目卡。" },
   },
   runner: {
-    icon: "▶",
+    icon: "▸",
     title: { en: "First Deploy", zh: "首次上线" },
     desc: { en: "Played Deploy Run.", zh: "玩了一次上线冲刺。" },
   },
@@ -75,6 +77,16 @@ export const ACHIEVEMENTS: Record<AchievementId, { icon: string; title: L; desc:
     icon: "☾",
     title: { en: "Night Owl", zh: "夜猫子" },
     desc: { en: "Visited between midnight and 5am.", zh: "在午夜到清晨五点之间来访。" },
+  },
+  hacker: {
+    icon: "{}",
+    title: { en: "Ran My Code", zh: "跑过代码" },
+    desc: { en: "Executed a snippet in the sandbox.", zh: "在沙箱里跑了一段代码。" },
+  },
+  seeker: {
+    icon: "⌘",
+    title: { en: "Power User", zh: "快捷键玩家" },
+    desc: { en: "Opened the command palette.", zh: "打开了命令面板。" },
   },
 };
 
