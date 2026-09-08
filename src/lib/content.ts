@@ -164,21 +164,35 @@ export const projects: Project[] = [
   },
   {
     id: "dividend",
-    name: "Dividend-Tracker",
+    name: "Dividend Stream",
     year: "2026",
     rank: { en: "Side Quest", zh: "支线项目" },
-    status: "prototype",
-    difficulty: 2,
+    status: "shipped",
+    difficulty: 3,
     summary: {
-      en: "Watch the dividends on the stocks you hold update in real time.",
-      zh: "实时看着手上持仓股票的股息在跳。",
+      en: "A dividend tracker that counts your income upward in real time — per second, per day, per year.",
+      zh: "把股息收入实时数上去的追踪器 —— 每秒、每天、每年三个尺度同时在跳。",
     },
     bullets: [
-      { en: "Kotlin Android client with live-updating figures.", zh: "Kotlin Android 客户端，数字实时刷新。" },
-      { en: "Started because I wanted a number I could check in two seconds.", zh: "起因就是想两秒内看到那个数字。" },
+      {
+        en: "A live counter: today's accumulated inflow ticks up every second, broken down into per-hour, per-day and next-30-days tiles.",
+        zh: "实时计数器：今天累积的收入每秒往上跳，再拆成每小时、每天、未来 30 天三个维度。",
+      },
+      {
+        en: "Dividend calendar: the next payment, a countdown to it, and which holding it comes from — with a bar showing how far the accumulation has crept toward the expected amount.",
+        zh: "股息日历：下一笔什么时候到、还剩多久、来自哪只持仓，配一条进度条显示已累积到期望值的多少。",
+      },
+      {
+        en: "Portfolio view: market value against cost basis, per-holding yield and next payment date.",
+        zh: "持仓视图：市值对比成本、每只的收益率和下次派息日。",
+      },
+      {
+        en: "Kotlin Android client. Figures are cached locally so the app opens instantly and refreshes in the background rather than blocking on the network.",
+        zh: "Kotlin Android 客户端。数据本地缓存，打开就有内容，联网刷新放到后台，不卡在网络请求上。",
+      },
     ],
     stack: ["Kotlin", "Android"],
-    href: "https://github.com/JTing904/Dividend-Tracker",
+    href: "https://github.com/JTing904/Dividend-Stream",
   },
 ];
 

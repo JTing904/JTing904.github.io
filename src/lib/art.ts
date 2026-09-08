@@ -289,7 +289,11 @@ export const projectScreens: Record<string, AppScreen[]> = {
       ],
     },
   ],
-  dividend: [{ tab: "Home", parts: ["./dividend-home.jpg"] }],
+  dividend: [
+    { tab: "Home", parts: ["./dividend-home.jpg"] },
+    { tab: "Dividends", parts: ["./dividend-live.jpg"] },
+    { tab: "Portfolio", parts: ["./dividend-portfolio.jpg"] },
+  ],
 };
 
 export function screenSrc(key: string, tab = 0, part = 0): string | null {

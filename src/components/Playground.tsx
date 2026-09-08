@@ -81,7 +81,7 @@ out.banks.forEach(b =>
   },
   {
     id: "dividend",
-    title: { en: "Dividend-Tracker — yield", zh: "Dividend-Tracker — 股息" },
+    title: { en: "Dividend Stream — yield", zh: "Dividend Stream — 股息" },
     note: {
       en: "Annual income and yield on cost, the two numbers the app exists to show.",
       zh: "年化收入和成本收益率 —— App 存在的意义就是显示这两个数。",
