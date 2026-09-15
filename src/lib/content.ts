@@ -80,6 +80,7 @@ export const skills: SkillNode[] = [
   { id: "matplotlib", label: "Matplotlib", tier: 1, branch: "data", note: { en: "Confusion matrices and metric comparisons.", zh: "混淆矩阵和各项指标对比。" } },
   { id: "pygame", label: "pygame", tier: 0, branch: "data", note: { en: "A tower defence with wave, economy and tower managers. Games teach game loops.", zh: "一个塔防：波次、经济、防御塔各有 manager。做游戏才懂游戏循环。" } },
 
+  { id: "figma", label: "Figma", tier: 0, branch: "craft", note: { en: "Screens get laid out and argued with before I write a line of them.", zh: "界面先摆出来、先跟自己吵一架，再动手写。" } },
   { id: "git", label: "Git", tier: 0, branch: "craft", note: { en: "Branches, rebases, and the occasional force-push regret.", zh: "分支、rebase，以及偶尔 force push 之后的后悔。" } },
   { id: "actions", label: "GitHub Actions", tier: 1, branch: "craft", note: { en: "This site builds and deploys itself on every push to main.", zh: "这个网站每次推到 main 都会自己构建、自己部署。" } },
   { id: "gradle", label: "Gradle", tier: 1, branch: "craft", note: { en: "Two independent builds in Dividend Stream, plus a jpackage MSI installer.", zh: "Dividend Stream 里两套独立构建，外加 jpackage 打的 MSI 安装包。" } },
