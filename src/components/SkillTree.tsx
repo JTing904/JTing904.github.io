@@ -16,7 +16,7 @@ export default function SkillTree() {
     <Section id="skills" index="02" title={ui.sectionSkills}>
       <p className="reveal mb-6 font-mono text-xs text-muted">{t(ui.clickNode)}</p>
 
-      <div className="reveal grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 lg:grid-cols-5">
+      <div className="reveal grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 lg:grid-cols-6">
         {BRANCHES.map((branch) => {
           const meta = branchMeta[branch];
           const nodes = skills

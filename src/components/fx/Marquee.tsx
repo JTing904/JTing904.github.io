@@ -6,15 +6,26 @@ import { useMotionValue, useScroll, useVelocity, useSpring, useAnimationFrame } 
 const ROW_A = [
   "Kotlin",
   "TypeScript",
-  "Android",
   "Java",
   "Python",
-  "Jetpack",
-  "SQLite",
-  "Figma",
+  "SQL",
+  "Spring Boot",
+  "PostgreSQL",
+  "Jetpack Compose",
+  "Android",
+];
+const ROW_B = [
+  "React 19",
+  "Next.js",
+  "Tailwind",
+  "Vite",
+  "Capacitor",
+  "Firebase",
+  "Flyway",
+  "scikit-learn",
+  "Gradle",
   "Git",
 ];
-const ROW_B = ["OOP", "Data Structures", "Databases", "Software Testing", "React", "Next.js", "C++"];
 
 function Row({ items, baseSpeed }: { items: string[]; baseSpeed: number }) {
   const x = useMotionValue(0);
