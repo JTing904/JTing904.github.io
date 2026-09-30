@@ -42,7 +42,7 @@ export default function Work() {
   const [active, setActive] = useState(0);
   const n = cards.length;
   const palettes = useRef<Palette[]>(
-    cards.map((c) => (c.kind === "cover" ? (c.colors.map(hex) as Palette) : ((baked as Record<string, Palette>)[c.src] ?? GREY))),
+    cards.map((c) => (c.kind === "cover" ? (c.colors.map(hex) as Palette) : ((baked as unknown as Record<string, Palette>)[c.src] ?? GREY))),
   );
   const byProject = useMemo(() => Object.fromEntries(projects.map((p) => [p.id, p])), []);
 
