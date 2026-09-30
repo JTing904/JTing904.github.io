@@ -1,0 +1,23 @@
+.acc {
+  background: #000; color: var(--on-dark);
+  padding: clamp(90px, 14vw, 200px) var(--gutter);
+  display: flex; flex-direction: column; gap: clamp(18px, 2.6vw, 34px);
+  overflow: hidden;
+}
+.head { display: flex; justify-content: space-between; gap: 16px; color: var(--muted-dark); }
+.figure {
+  display: flex; align-items: baseline;
+  font-family: var(--f-mono); font-weight: 500;
+  font-size: clamp(44px, 11.2vw, 210px); line-height: 1; letter-spacing: -0.06em;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.cur { font-size: 0.26em; letter-spacing: 0; margin-right: 0.35em; color: var(--muted-dark); align-self: flex-start; margin-top: 0.3em; }
+.digit { display: inline-block; height: 1em; overflow: hidden; width: 0.6em; }
+.reel { display: flex; flex-direction: column; transition: transform 0.5s var(--ease-out); }
+.reel span { height: 1em; line-height: 1; display: block; }
+.dot { display: inline-block; width: 0.34em; text-align: center; }
+.dim { color: #3a3d44; }
+.foot { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: 13px; color: var(--muted-dark); border-top: 1px solid var(--line-dark); padding-top: 14px; }
+.formula { color: var(--on-dark); }
+.note { margin: 0; max-width: 62ch; font-size: clamp(16px, 1.3vw, 19px); line-height: 1.5; color: rgba(236, 237, 239, 0.78); }

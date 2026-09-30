@@ -1,65 +1,41 @@
 "use client";
 
-import { timeline, ui } from "@/lib/content";
-import { useStore } from "@/lib/store";
-import Section from "./Section";
-
-const KIND = {
-  edu: { icon: "◆", color: "var(--color-acid)", label: { en: "Education", zh: "学历" } },
-  work: { icon: "■", color: "var(--color-violet)", label: { en: "Work", zh: "工作" } },
-  cca: { icon: "●", color: "var(--color-amber)", label: { en: "Activity", zh: "课外" } },
-} as const;
+import { useEffect, useRef } from "react";
+import { journey, ui } from "@/lib/content";
+import { useLang } from "@/lib/lang";
+import { gsap, reducedMotion } from "@/lib/motion";
+import s from "./Journey.module.css";
 
 export default function Journey() {
-  const { t } = useStore();
+  const { t } = useLang();
+  const root = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const el = root.current;
+    if (!el || reducedMotion()) return;
+    const ctx = gsap.context(() => {
+      gsap.utils.toArray<HTMLElement>(`.${s.row}`).forEach((row) => {
+        const tl = gsap.timeline({ scrollTrigger: { trigger: row, start: "top 88%" } });
+        tl.fromTo(row.querySelector(`.${s.line}`), { scaleX: 0 }, { scaleX: 1, duration: 1.2, ease: "expo.inOut" })
+          .fromTo(row.querySelectorAll(`.${s.cell} > span`), { yPercent: 110 }, { yPercent: 0, duration: 1, ease: "expo.out", stagger: 0.06 }, 0.25);
+      });
+    }, el);
+    return () => ctx.revert();
+  }, []);
 
   return (
-    <Section id="journey" index="04" title={ui.sectionJourney}>
-      <ol className="relative grid gap-4 pl-7 sm:pl-9">
-        <span
-          aria-hidden
-          className="draw-line absolute left-[10px] top-2 bottom-2 w-px bg-gradient-to-b from-acid via-violet to-transparent sm:left-3"
-        />
-        {timeline.map((item) => {
-          const k = KIND[item.kind];
-          return (
-            <li key={item.period + item.title.en} className="reveal relative">
-              <span
-                aria-hidden
-                className="absolute -left-7 top-5 grid size-5 place-items-center rounded-full border border-line bg-bg text-[9px] sm:-left-9"
-                style={{ color: k.color }}
-              >
-                {k.icon}
-              </span>
-
-              <div className="rounded-2xl border border-line bg-bg-2/70 p-5">
-                <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-                  <span className="font-mono text-[11px] text-muted">{item.period}</span>
-                  <span
-                    className="rounded-full border px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider"
-                    style={{ borderColor: k.color, color: k.color }}
-                  >
-                    {t(k.label)}
-                  </span>
-                </div>
-                <h3 className="mt-2 text-base font-semibold tracking-tight">{t(item.title)}</h3>
-                <p className="mt-0.5 font-mono text-xs text-muted">{t(item.org)}</p>
-                <ul className="mt-3 grid gap-1.5">
-                  {item.bullets.map((b) => (
-                    <li key={b.en} className="flex gap-2.5 text-sm text-fg/80">
-                      <span
-                        className="mt-[7px] size-1 shrink-0 rounded-full"
-                        style={{ background: k.color }}
-                      />
-                      <span className="text-pretty">{t(b)}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </li>
-          );
-        })}
+    <section ref={root} data-tone="light" className={`${s.journey} gutter`} aria-labelledby="journey-title">
+      <h2 id="journey-title" className="eyebrow">{t(ui.journeyTitle)}</h2>
+      <ol className={s.list}>
+        {journey.map((j, i) => (
+          <li key={i} className={s.row}>
+            <span className={s.line} aria-hidden />
+            <span className={`${s.cell} ${s.when} mono`}><span>{j.when}</span></span>
+            <span className={`${s.cell} ${s.what}`}><span>{t(j.what)}</span></span>
+            <span className={`${s.cell} ${s.where}`}><span>{t(j.where)}</span></span>
+          </li>
+        ))}
       </ol>
-    </Section>
+    </section>
   );
 }

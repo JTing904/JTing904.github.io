@@ -1,0 +1,18 @@
+.sheet {
+  position: relative; z-index: 2;
+  background: var(--ink); color: var(--on-dark);
+  margin-top: -48px;
+  padding: clamp(80px, 12vw, 180px) var(--gutter) clamp(90px, 14vw, 220px);
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 4fr); gap: 24px;
+}
+.text {
+  margin: 0;
+  font-size: clamp(30px, 4.6vw, 76px);
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+  font-weight: 560;
+  font-stretch: 92%;
+  text-wrap: pretty;
+}
+.w { transition: none; }
+@media (max-width: 760px) { .sheet { grid-template-columns: 1fr; } }

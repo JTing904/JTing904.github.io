@@ -1,51 +1,45 @@
 "use client";
 
-import Header from "@/components/Header";
-import Terminal from "@/components/Terminal";
-import Character from "@/components/Character";
-import SkillTree from "@/components/SkillTree";
-import Quests from "@/components/Quests";
+import { useEffect, useState } from "react";
+import Preloader from "@/components/Preloader";
+import Nav from "@/components/Nav";
+import Hero from "@/components/Hero";
+import Statement from "@/components/Statement";
+import Work from "@/components/Work";
+import Accrual from "@/components/Accrual";
+import Skills from "@/components/Skills";
 import Journey from "@/components/Journey";
-import GitHubLive from "@/components/GitHubLive";
-import Playground from "@/components/Playground";
-import DeployRun from "@/components/DeployRun";
 import Contact from "@/components/Contact";
-import Resume from "@/components/Resume";
-import Toasts from "@/components/Toasts";
-import Cursor from "@/components/fx/Cursor";
-import Marquee from "@/components/fx/Marquee";
-import CommandPalette from "@/components/CommandPalette";
-import { useStore } from "@/lib/store";
+import Chrome from "@/components/Chrome";
+import { ScrollTrigger, startSmooth } from "@/lib/motion";
 
 export default function Page() {
-  const { mode, konami } = useStore();
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+    window.scrollTo(0, 0);
+    startSmooth();
+    const onLoad = () => ScrollTrigger.refresh();
+    window.addEventListener("load", onLoad);
+    document.fonts?.ready.then(() => ScrollTrigger.refresh());
+    return () => window.removeEventListener("load", onLoad);
+  }, []);
 
   return (
-    <div
-      className={
-        konami ? "transition-[filter] duration-500 [filter:hue-rotate(150deg)_saturate(1.4)]" : ""
-      }
-    >
-      <Header />
-      {mode === "play" ? (
-        <main>
-          <Terminal />
-          <Marquee />
-          <Character />
-          <SkillTree />
-          <Quests />
-          <Journey />
-          <GitHubLive />
-          <Playground />
-          <DeployRun />
-          <Contact />
-        </main>
-      ) : (
-        <Resume />
-      )}
-      <Toasts />
-      <Cursor />
-      <CommandPalette />
-    </div>
+    <>
+      <Preloader onDone={() => setReady(true)} />
+      <Nav />
+      <main>
+        <Hero start={ready} />
+        <Statement />
+        <Work />
+        <Accrual />
+        <Skills />
+        <Journey />
+      </main>
+      <Contact />
+      <Chrome />
+    </>
   );
 }

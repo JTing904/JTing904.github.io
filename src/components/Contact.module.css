@@ -1,0 +1,21 @@
+.contact { background: var(--ink); color: var(--on-dark); padding-block: clamp(90px, 12vw, 180px) 20px; overflow: hidden; }
+.top { display: flex; justify-content: space-between; gap: 16px; color: var(--muted-dark); flex-wrap: wrap; }
+.mail {
+  display: block; margin-top: clamp(18px, 2.4vw, 32px);
+  font-size: clamp(34px, 8.6vw, 168px); line-height: 0.92; letter-spacing: -0.045em;
+  font-weight: 800; font-stretch: 76%;
+  overflow-wrap: anywhere;
+  transition: color 0.3s;
+}
+.mail:hover { color: #fff; }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: clamp(22px, 3vw, 40px); }
+.btn {
+  font-family: var(--f-mono); font-size: 13px; padding: 10px 16px; border-radius: 999px;
+  border: 1px solid rgba(236, 237, 239, 0.3); transition: background 0.25s, color 0.25s;
+}
+.btn:hover { background: var(--on-dark); color: var(--ink); }
+.base {
+  margin-top: clamp(80px, 12vw, 180px); padding-top: 16px; border-top: 1px solid var(--line-dark);
+  display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  font-size: 12px; color: var(--muted-dark);
+}

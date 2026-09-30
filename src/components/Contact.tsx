@@ -1,56 +1,63 @@
 "use client";
 
-import { profile, ui } from "@/lib/content";
-import { useStore } from "@/lib/store";
-import Section from "./Section";
+import { useRef, useState } from "react";
+import { person, ui } from "@/lib/content";
+import { useLang } from "@/lib/lang";
+import { scrollToY } from "@/lib/motion";
+import s from "./Contact.module.css";
+
+const GLYPHS = "0123456789@.";
+
+/** The address scrambles through digits on hover and settles back, one letter at a time. */
+function Scramble({ text }: { text: string }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const running = useRef(false);
+  const run = () => {
+    const el = ref.current;
+    if (!el || running.current || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    running.current = true;
+    const chars = Array.from(text);
+    let frame = 0;
+    const id = setInterval(() => {
+      frame++;
+      el.textContent = chars
+        .map((c, i) => (i < frame / 1.6 ? c : c === " " ? " " : GLYPHS[(Math.random() * GLYPHS.length) | 0]))
+        .join("");
+      if (frame / 1.6 >= chars.length) { clearInterval(id); el.textContent = text; running.current = false; }
+    }, 28);
+  };
+  return <span ref={ref} onPointerEnter={run} onFocus={run}>{text}</span>;
+}
 
 export default function Contact() {
-  const { t, lang } = useStore();
-  const en = lang === "en";
-
-  const links = [
-    { label: "Email", value: profile.email, href: `mailto:${profile.email}` },
-    { label: "GitHub", value: "github.com/JTing904", href: profile.github },
-  ];
-
+  const { t } = useLang();
+  const [copied, setCopied] = useState(false);
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(person.email);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1600);
+    } catch {}
+  };
   return (
-    <Section id="contact" index="08" title={ui.sectionContact}>
-      <div className="reveal overflow-hidden rounded-2xl border border-line bg-bg-2/70">
-        <div className="border-b border-line/70 px-5 py-3 font-mono text-[11px] text-muted">
-          $ cat contact.json
-        </div>
-        <div className="grid gap-px bg-line/60 sm:grid-cols-2">
-          {links.map((l) => (
-            <a
-              key={l.label}
-              href={l.href}
-              target={l.href.startsWith("http") ? "_blank" : undefined}
-              rel="noopener noreferrer"
-              className="group bg-bg-2 p-5 transition-colors hover:bg-surface sm:p-6"
-            >
-              <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted">
-                {l.label}
-              </p>
-              <p className="mt-1.5 break-all font-mono text-sm text-fg transition-colors group-hover:text-acid">
-                {l.value}
-              </p>
-            </a>
-          ))}
-        </div>
-        <div className="border-t border-line/70 px-5 py-4 sm:px-6">
-          <p className="text-pretty text-sm text-muted">
-            {en
-              ? "Open to internships and junior roles in backend or mobile. Based in Malaysia, happy to work remote."
-              : "正在找后端或移动端的实习与初级职位。人在马来西亚，远程也可以。"}
-          </p>
-        </div>
+    <footer id="contact" data-tone="dark" className={s.contact}>
+      <div className={`${s.top} gutter`}>
+        <span className="eyebrow">{t(ui.say)}</span>
+        <span className="eyebrow">{t(person.status)}</span>
       </div>
-
-      <p className="mt-8 text-center font-mono text-[11px] text-muted/70">
-        {en
-          ? "Built with Next.js, React 19 and Tailwind v4 · view transitions, scroll-driven animations, canvas"
-          : "用 Next.js、React 19 和 Tailwind v4 做的 · View Transitions、滚动驱动动画、Canvas"}
-      </p>
-    </Section>
+      <a className={`${s.mail} gutter`} href={`mailto:${person.email}`} data-cursor="link">
+        <Scramble text={person.email} />
+      </a>
+      <div className={`${s.actions} gutter`}>
+        <button className={s.btn} onClick={copy}>{copied ? t(ui.copied) : t(ui.copy)}</button>
+        <a className={s.btn} href={person.github} target="_blank" rel="noreferrer">{person.githubLabel} ↗</a>
+      </div>
+      <div className={`${s.base} gutter`}>
+        <span className="mono">© 2026 {person.name}</span>
+        <span className="mono">{t(person.city)}</span>
+        <span className="mono">Next.js · GSAP · Lenis</span>
+        <button className="mono" onClick={() => scrollToY(0)}>↑ Top</button>
+      </div>
+    </footer>
   );
 }
