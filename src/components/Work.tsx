@@ -64,7 +64,7 @@ export default function Work() {
     });
 
     let target = 0, pos = 0, lastActive = -1;
-    const perCard = () => window.innerHeight * 0.62;
+    const perCard = () => window.innerHeight * 0.52;
 
     const st = ScrollTrigger.create({
       trigger: sec,
@@ -80,7 +80,18 @@ export default function Work() {
 
     // drag = scroll, so there is only one source of truth
     let dragging = false, sx = 0, sy = 0, moved = 0;
-    const cardStep = () => (els[0]?.offsetWidth ?? 300) + GAP;
+    // cards can differ in width (desktop screenshots are landscape), so lay them on a strip
+    let widths = els.map((el) => el.offsetWidth || 300);
+    let centres: number[] = [];
+    const layout = () => {
+      widths = els.map((el) => el.offsetWidth || 300);
+      centres = [0];
+      for (let k = 1; k < n; k++) centres[k] = centres[k - 1] + (widths[k - 1] + widths[k]) / 2 * 0.94 + GAP;
+    };
+    layout();
+    const ro = new ResizeObserver(layout);
+    els.forEach((el) => ro.observe(el));
+    const cardStep = () => (widths[Math.max(0, Math.min(n - 1, Math.round(target)))] ?? 300) + GAP;
     const down = (e: PointerEvent) => {
       dragging = true; moved = 0; sx = e.clientX; sy = window.scrollY;
       stg.setPointerCapture(e.pointerId);
@@ -140,11 +151,12 @@ export default function Work() {
       if (Math.abs(target - pos) < 0.0005) pos = target;
 
       // cards
-      const w = els[0]?.offsetWidth ?? 300;
-      const near = w * 0.96 + GAP, far = w * 0.78 + GAP;
+      const j0 = Math.max(0, Math.min(n - 1, Math.floor(pos)));
+      const j1 = Math.min(n - 1, j0 + 1);
+      const cp = centres[j0] + (centres[j1] - centres[j0]) * (pos - j0);
       els.forEach((el, i) => {
         const d = i - pos, ad = Math.abs(d), sg = Math.sign(d);
-        const x = sg * (Math.min(ad, 1) * near + Math.max(0, ad - 1) * far);
+        const x = (centres[i] - cp) * (1 - 0.16 * Math.min(1, Math.max(0, ad - 1)));
         const rot = sg * Math.min(ad, 1) * MAX_ROT;
         const z = -Math.min(ad, 2.4) * MAX_DEPTH;
         const sc = 1 - Math.min(ad, 1) * (1 - MIN_SCALE);
@@ -187,6 +199,7 @@ export default function Work() {
 
     return () => {
       gsap.ticker.remove(frame);
+      ro.disconnect();
       st.kill();
       stg.removeEventListener("pointerdown", down);
       stg.removeEventListener("pointermove", move);
@@ -214,7 +227,7 @@ export default function Work() {
 
         <div ref={stage} className={s.stage} data-cursor="drag" role="listbox" aria-label={t(ui.work)}>
           {cards.map((c, i) => (
-            <div key={i} data-i={i} className={s.card} role="option" aria-selected={i === active}
+            <div key={i} data-i={i} className={`${s.card} ${c.kind === "shot" && c.wide ? s.wide : ""}`} role="option" aria-selected={i === active}
               aria-label={`${byProject[c.project].name}, ${t(c.label)}`}>
               {c.kind === "shot" ? (
                 // eslint-disable-next-line @next/next/no-img-element
@@ -234,6 +247,7 @@ export default function Work() {
             <p className={s.capLine}>{t(proj.line)}</p>
             <div className={s.stack}>
               {proj.stack.map((x) => <span key={x}>{x}</span>)}
+              {proj.site && <a href={proj.site} target="_blank" rel="noreferrer" className={s.src}>{t(ui.website)} ↗</a>}
               {proj.href && <a href={proj.href} target="_blank" rel="noreferrer" className={s.src}>{t(ui.source)} ↗</a>}
             </div>
           </div>

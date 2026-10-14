@@ -7,6 +7,8 @@ export const person = {
   email: "kengtingtan@gmail.com",
   github: "https://github.com/JTing904",
   githubLabel: "github.com/JTing904",
+  instagram: "https://www.instagram.com/jtinnnng/",
+  instagramLabel: "@jtinnnng",
   city: { en: "Seremban, Malaysia", zh: "马来西亚 · 芙蓉" },
   role: { en: "Software engineering undergraduate", zh: "软件工程本科生" },
   intro: {
@@ -30,9 +32,23 @@ export type Project = {
   line: L;
   stack: string[];
   href?: string;
+  site?: string;
 };
 
 export const projects: Project[] = [
+  {
+    id: "orbitoffice",
+    name: "OrbitOffice",
+    year: "2026",
+    kind: { en: "Windows desktop app · open source · v0.1", zh: "Windows 桌面应用 · 开源 · v0.1" },
+    line: {
+      en: "Build your own AI office. Describe the work and AI sets up departments of agents in one 3D world; they split tasks, hand off to each other and write real files into your folder. Runs on free API keys or a built-in local model, and its MCP server lets Claude Code assign the team work.",
+      zh: "搭建你自己的 AI 办公室。描述要做的事，AI 就在一个 3D 世界里建好各个部门和员工；它们分工、互相交接，把真实文件写进你的文件夹。可以用免费 API key 或内置的本地模型，还自带 MCP 服务器，让 Claude Code 直接给团队派活。",
+    },
+    stack: ["Electron", "Three.js", "Blender", "MCP server", "Local LLMs", "Node.js"],
+    href: "https://github.com/JTing904/OrbitOffice",
+    site: "https://jting904.github.io/OrbitOffice",
+  },
   {
     id: "dividend",
     name: "Dividend Stream",
@@ -61,13 +77,14 @@ export const projects: Project[] = [
     id: "savvypiggy",
     name: "SavvyPiggy",
     year: "2026",
-    kind: { en: "Android · Firebase", zh: "Android · Firebase" },
+    kind: { en: "Android · v2.0", zh: "Android · v2.0" },
     line: {
-      en: "Savings in piggy banks. Money you borrowed is paid back before a deposit counts toward a goal, and every amount is whole cents.",
-      zh: "用存钱罐管储蓄。借出去的钱先还，剩下的才算进目标；所有金额都是整数「分」。",
+      en: "Every ringgit in its place. One deposit is split across your goals in whole cents, borrowed money is cleared first, and Bursa investing stays separate. v2.0 adds a wallet, bills, receipts and debts with interest.",
+      zh: "每一块钱都有去处。一笔存款按比例分进各个目标，全用整数「分」计算；借的钱先还，Bursa 投资单独分开。v2.0 加了钱包、账单、收据和带利息的欠款。",
     },
-    stack: ["React 19", "TypeScript", "Vite", "Tailwind", "Capacitor", "Firebase"],
+    stack: ["React 19", "TypeScript", "Vite", "Capacitor", "Firebase", "Cloudflare Workers"],
     href: "https://github.com/JTing904/SavvyPiggy",
+    site: "https://jting904.github.io/SavvyPiggy",
   },
   {
     id: "ml",
@@ -84,10 +101,14 @@ export const projects: Project[] = [
 
 /** Cards in the carousel. `src` cards are real screenshots; `cover` cards are drawn in the DOM. */
 export type Card =
-  | { kind: "shot"; project: string; src: string; label: L }
+  | { kind: "shot"; project: string; src: string; label: L; wide?: boolean }
   | { kind: "cover"; project: string; label: L; colors: [string, string, string] };
 
 export const cards: Card[] = [
+  { kind: "shot", project: "orbitoffice", src: "work/orbit-world.webp", label: { en: "Two departments, one world", zh: "两个部门，同一个世界" }, wide: true },
+  { kind: "shot", project: "orbitoffice", src: "work/orbit-software.webp", label: { en: "Software team", zh: "软件团队" }, wide: true },
+  { kind: "shot", project: "orbitoffice", src: "work/orbit-marketing.webp", label: { en: "Marketing agency", zh: "营销公司" }, wide: true },
+  { kind: "shot", project: "orbitoffice", src: "work/orbit-builder.webp", label: { en: "AI office builder", zh: "AI 建办公室" }, wide: true },
   { kind: "shot", project: "dividend", src: "work/dividend-live.webp", label: { en: "Live dividends", zh: "实时股息" } },
   { kind: "shot", project: "dividend", src: "work/dividend-home.webp", label: { en: "Home", zh: "首页" } },
   { kind: "shot", project: "dividend", src: "work/dividend-portfolio.webp", label: { en: "Portfolio", zh: "持仓" } },
@@ -102,8 +123,8 @@ export const cards: Card[] = [
 ];
 
 export const skills: { group: L; items: string[] }[] = [
-  { group: { en: "Server", zh: "服务端" }, items: ["Kotlin", "Spring Boot", "Hono", "PostgreSQL", "Prisma", "Flyway", "JWT"] },
-  { group: { en: "Client", zh: "客户端" }, items: ["React 19", "React Native", "Expo", "TypeScript", "Next.js", "Jetpack Compose", "Capacitor"] },
+  { group: { en: "Server", zh: "服务端" }, items: ["Kotlin", "Spring Boot", "Hono", "PostgreSQL", "Prisma", "Cloudflare Workers", "MCP servers"] },
+  { group: { en: "Client", zh: "客户端" }, items: ["React 19", "React Native", "Expo", "TypeScript", "Next.js", "Electron", "Three.js", "Jetpack Compose"] },
   { group: { en: "Data", zh: "数据" }, items: ["Python", "pandas", "scikit-learn", "SQL (Oracle)", "Firebase"] },
   { group: { en: "Craft", zh: "工程" }, items: ["Java", "Vitest", "Zod", "Git", "GitHub Actions", "Gradle", "Figma"] },
 ];
@@ -125,6 +146,7 @@ export const ui = {
   local: { en: "Local time", zh: "当地时间" },
   drag: { en: "Scroll or drag", zh: "滚动或拖动" },
   source: { en: "Source", zh: "源码" },
+  website: { en: "Website", zh: "网站" },
   accrualTitle: { en: "Accrued since you arrived", zh: "你打开这页之后累积的" },
   accrualNote: {
     en: "This is the counter from Dividend Stream, with its own example: RM320.00 earned over 182 days. Nothing is written per second. Each client computes it from the clock, rounded down so an unpaid amount is never overstated.",

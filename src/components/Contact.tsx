@@ -51,6 +51,7 @@ export default function Contact() {
       <div className={`${s.actions} gutter`}>
         <button className={s.btn} onClick={copy}>{copied ? t(ui.copied) : t(ui.copy)}</button>
         <a className={s.btn} href={person.github} target="_blank" rel="noreferrer">{person.githubLabel} ↗</a>
+        <a className={s.btn} href={person.instagram} target="_blank" rel="noreferrer">Instagram {person.instagramLabel} ↗</a>
       </div>
       <div className={`${s.base} gutter`}>
         <span className="mono">© 2026 {person.name}</span>

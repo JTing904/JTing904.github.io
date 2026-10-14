@@ -51,6 +51,13 @@
   background: #111;
   position: relative;
 }
+.wide {
+  aspect-ratio: 4 / 3;
+  height: auto;
+  width: min(calc(min(56svh, 600px) * 1.3333), 86vw);
+  max-width: 86vw;
+  border-radius: clamp(12px, 1.4vw, 18px);
+}
 .card::after {
   content: ""; position: absolute; inset: 0; pointer-events: none;
   background: linear-gradient(115deg, rgba(255, 255, 255, 0.16), transparent 32%);
@@ -107,6 +114,7 @@
 
 @media (max-width: 760px) {
   .card { height: min(50svh, 460px); }
+  .wide { height: auto; width: 86vw; }
   .caption { grid-template-columns: 1fr; gap: 14px; }
   .capRight { flex-direction: row; align-items: center; justify-content: space-between; min-width: 0; }
   .track { width: 96px; }

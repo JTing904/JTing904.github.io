@@ -8,7 +8,7 @@ import s from "./Skills.module.css";
 
 const ROWS = [
   ["Kotlin", "Spring Boot", "Hono", "PostgreSQL", "Prisma", "Flyway", "Jetpack Compose"],
-  ["React 19", "React Native", "Expo", "TypeScript", "Next.js", "Capacitor", "Firebase"],
+  ["React 19", "React Native", "Expo", "TypeScript", "Next.js", "Capacitor", "Firebase", "Cloudflare"],
   ["Python", "pandas", "scikit-learn", "SQL", "Java", "Git", "Figma"],
 ];
 
