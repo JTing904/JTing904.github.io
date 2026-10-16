@@ -1,4 +1,55 @@
 {
+ "work/windowverse-desk.webp": [
+  [
+   127,
+   77,
+   36
+  ],
+  [
+   102,
+   101,
+   29
+  ],
+  [
+   47,
+   34,
+   24
+  ]
+ ],
+ "work/windowverse-six.webp": [
+  [
+   141,
+   83,
+   37
+  ],
+  [
+   113,
+   111,
+   30
+  ],
+  [
+   46,
+   34,
+   25
+  ]
+ ],
+ "work/windowverse-figure.webp": [
+  [
+   149,
+   98,
+   54
+  ],
+  [
+   39,
+   41,
+   73
+  ],
+  [
+   47,
+   35,
+   25
+  ]
+ ],
  "work/orbit-world.webp": [
   [
    31,
@@ -48,23 +99,6 @@
    26,
    28,
    45
-  ]
- ],
- "work/orbit-builder.webp": [
-  [
-   47,
-   45,
-   98
-  ],
-  [
-   69,
-   102,
-   155
-  ],
-  [
-   25,
-   26,
-   46
   ]
  ],
  "work/dividend-live.webp": [
@@ -150,23 +184,6 @@
    20,
    31,
    52
-  ]
- ],
- "work/meritai-review.webp": [
-  [
-   55,
-   200,
-   125
-  ],
-  [
-   91,
-   85,
-   120
-  ],
-  [
-   32,
-   35,
-   40
   ]
  ],
  "work/meritai-leaderboard.webp": [

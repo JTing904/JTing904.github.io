@@ -248,6 +248,7 @@ export default function Work() {
             <div className={s.stack}>
               {proj.stack.map((x) => <span key={x}>{x}</span>)}
               {proj.site && <a href={proj.site} target="_blank" rel="noreferrer" className={s.src}>{t(ui.website)} ↗</a>}
+              {proj.download && <a href={proj.download} target="_blank" rel="noreferrer" className={s.src}>{t(ui.download)} ↗</a>}
               {proj.href && <a href={proj.href} target="_blank" rel="noreferrer" className={s.src}>{t(ui.source)} ↗</a>}
             </div>
           </div>

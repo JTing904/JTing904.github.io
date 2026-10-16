@@ -33,9 +33,23 @@ export type Project = {
   stack: string[];
   href?: string;
   site?: string;
+  download?: string;
 };
 
 export const projects: Project[] = [
+  {
+    id: "windowverse",
+    name: "WindowVerse",
+    year: "2026",
+    kind: { en: "Windows 11 app · 0.4 preview · free", zh: "Windows 11 应用 · 0.4 预览版 · 免费" },
+    line: {
+      en: "More screens, no extra monitors. Your real windows sit on up to six virtual monitors in a 3D room (landscape, portrait or curved ultrawide), and you can step into any of them to type and click. Day, night, weather and festivals; nothing leaves your PC.",
+      zh: "不用多买屏幕也能多屏。你真实的窗口摆在 3D 房间里最多六台虚拟显示器上，横屏、竖屏、曲面带鱼屏都行，还能直接进去打字、点击。有昼夜、天气和节日布置；所有东西都只留在你的电脑上。",
+    },
+    stack: ["Godot", "Windows 11", "DirectX 12", "3D"],
+    site: "https://jting904.github.io/WindowVerse-releases",
+    download: "https://github.com/JTing904/WindowVerse-releases/releases/latest",
+  },
   {
     id: "orbitoffice",
     name: "OrbitOffice",
@@ -105,16 +119,17 @@ export type Card =
   | { kind: "cover"; project: string; label: L; colors: [string, string, string] };
 
 export const cards: Card[] = [
+  { kind: "shot", project: "windowverse", src: "work/windowverse-desk.webp", label: { en: "Three real windows on a desk", zh: "桌上三台显示器，都是真窗口" } },
+  { kind: "shot", project: "windowverse", src: "work/windowverse-six.webp", label: { en: "Six screens, one in portrait", zh: "六台屏，其中一台竖放" } },
+  { kind: "shot", project: "windowverse", src: "work/windowverse-figure.webp", label: { en: "The desk figurine", zh: "桌上的手办" } },
   { kind: "shot", project: "orbitoffice", src: "work/orbit-world.webp", label: { en: "Two departments, one world", zh: "两个部门，同一个世界" }, wide: true },
   { kind: "shot", project: "orbitoffice", src: "work/orbit-software.webp", label: { en: "Software team", zh: "软件团队" }, wide: true },
   { kind: "shot", project: "orbitoffice", src: "work/orbit-marketing.webp", label: { en: "Marketing agency", zh: "营销公司" }, wide: true },
-  { kind: "shot", project: "orbitoffice", src: "work/orbit-builder.webp", label: { en: "AI office builder", zh: "AI 建办公室" }, wide: true },
   { kind: "shot", project: "dividend", src: "work/dividend-live.webp", label: { en: "Live dividends", zh: "实时股息" } },
   { kind: "shot", project: "dividend", src: "work/dividend-home.webp", label: { en: "Home", zh: "首页" } },
   { kind: "shot", project: "dividend", src: "work/dividend-portfolio.webp", label: { en: "Portfolio", zh: "持仓" } },
   { kind: "shot", project: "meritai", src: "work/meritai-home.webp", label: { en: "Home", zh: "首页" } },
   { kind: "shot", project: "meritai", src: "work/meritai-packages.webp", label: { en: "Pick a package", zh: "选任务包" } },
-  { kind: "shot", project: "meritai", src: "work/meritai-review.webp", label: { en: "Task review", zh: "审核结果" } },
   { kind: "shot", project: "meritai", src: "work/meritai-leaderboard.webp", label: { en: "Leaderboard", zh: "排行榜" } },
   { kind: "shot", project: "savvypiggy", src: "work/savvypiggy-home.webp", label: { en: "Home", zh: "首页" } },
   { kind: "shot", project: "savvypiggy", src: "work/savvypiggy-strategy.webp", label: { en: "Strategy", zh: "策略" } },
@@ -124,7 +139,7 @@ export const cards: Card[] = [
 
 export const skills: { group: L; items: string[] }[] = [
   { group: { en: "Server", zh: "服务端" }, items: ["Kotlin", "Spring Boot", "Hono", "PostgreSQL", "Prisma", "Cloudflare Workers", "MCP servers"] },
-  { group: { en: "Client", zh: "客户端" }, items: ["React 19", "React Native", "Expo", "TypeScript", "Next.js", "Electron", "Three.js", "Jetpack Compose"] },
+  { group: { en: "Client", zh: "客户端" }, items: ["React 19", "React Native", "Expo", "TypeScript", "Next.js", "Electron", "Three.js", "Godot", "Jetpack Compose"] },
   { group: { en: "Data", zh: "数据" }, items: ["Python", "pandas", "scikit-learn", "SQL (Oracle)", "Firebase"] },
   { group: { en: "Craft", zh: "工程" }, items: ["Java", "Vitest", "Zod", "Git", "GitHub Actions", "Gradle", "Figma"] },
 ];
@@ -147,6 +162,7 @@ export const ui = {
   drag: { en: "Scroll or drag", zh: "滚动或拖动" },
   source: { en: "Source", zh: "源码" },
   website: { en: "Website", zh: "网站" },
+  download: { en: "Download", zh: "下载" },
   accrualTitle: { en: "Accrued since you arrived", zh: "你打开这页之后累积的" },
   accrualNote: {
     en: "This is the counter from Dividend Stream, with its own example: RM320.00 earned over 182 days. Nothing is written per second. Each client computes it from the clock, rounded down so an unpaid amount is never overstated.",
