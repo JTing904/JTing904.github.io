@@ -50,7 +50,6 @@ export const projects: Project[] = [
     stack: ["Vue 3", "Electron", "Capacitor", "Supabase"],
     href: "https://github.com/JTing904/LyriStage",
     site: "https://jting904.github.io/LyriStage-releases",
-    download: "https://github.com/JTing904/LyriStage/releases/latest",
     app: "https://lyristage.vercel.app",
   },
   {
