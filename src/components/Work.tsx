@@ -29,6 +29,20 @@ function Cover({ card }: { card: Extract<Card, { kind: "cover" }> }) {
         <span className="eyebrow">19 features · stratified CV</span>
       </div>
     );
+  if (card.project === "lyristage") {
+    const words = ["Let", "the", "lyrics", "take", "the", "stage."];
+    return (
+      <div className={s.cover} style={style}>
+        <span className="eyebrow">9 lyric stages</span>
+        <b className={s.lyric}>
+          {words.map((w, i) => (
+            <span key={i}>{w} </span>
+          ))}
+        </b>
+        <span className="eyebrow">Word-by-word · Listen Together</span>
+      </div>
+    );
+  }
   return null;
 }
 
@@ -227,7 +241,7 @@ export default function Work() {
 
         <div ref={stage} className={s.stage} data-cursor="drag" role="listbox" aria-label={t(ui.work)}>
           {cards.map((c, i) => (
-            <div key={i} data-i={i} className={`${s.card} ${c.kind === "shot" && c.wide ? s.wide : ""}`} role="option" aria-selected={i === active}
+            <div key={i} data-i={i} className={`${s.card} ${c.wide ? s.wide : ""}`} role="option" aria-selected={i === active}
               aria-label={`${byProject[c.project].name}, ${t(c.label)}`}>
               {c.kind === "shot" ? (
                 // eslint-disable-next-line @next/next/no-img-element
@@ -249,6 +263,7 @@ export default function Work() {
               {proj.stack.map((x) => <span key={x}>{x}</span>)}
               {proj.site && <a href={proj.site} target="_blank" rel="noreferrer" className={s.src}>{t(ui.website)} ↗</a>}
               {proj.download && <a href={proj.download} target="_blank" rel="noreferrer" className={s.src}>{t(ui.download)} ↗</a>}
+              {proj.app && <a href={proj.app} target="_blank" rel="noreferrer" className={s.src}>{t(ui.webApp)} ↗</a>}
               {proj.href && <a href={proj.href} target="_blank" rel="noreferrer" className={s.src}>{t(ui.source)} ↗</a>}
             </div>
           </div>

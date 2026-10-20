@@ -34,9 +34,24 @@ export type Project = {
   href?: string;
   site?: string;
   download?: string;
+  app?: string;
 };
 
 export const projects: Project[] = [
+  {
+    id: "lyristage",
+    name: "LyriStage",
+    year: "2026",
+    kind: { en: "Windows · Android · iPhone web app · v2.0", zh: "Windows · Android · iPhone 网页版 · v2.0" },
+    line: {
+      en: "Let the lyrics take the stage. A lyrics-first music player with nine full-screen lyric styles and word-by-word highlighting, a Daily Mix, and Listen Together rooms that keep play, pause and skip in sync across devices.",
+      zh: "让歌词站上舞台。以歌词为主角的音乐播放器：九种全屏歌词样式、逐字高亮、每日推荐，还有「一起听」房间，播放、暂停、切歌在所有设备上同步。",
+    },
+    stack: ["Vue 3", "Electron", "Capacitor", "Supabase"],
+    href: "https://github.com/JTing904/LyriStage",
+    site: "https://jting904.github.io/LyriStage-releases",
+    app: "https://lyristage.vercel.app",
+  },
   {
     id: "windowverse",
     name: "WindowVerse",
@@ -116,9 +131,12 @@ export const projects: Project[] = [
 /** Cards in the carousel. `src` cards are real screenshots; `cover` cards are drawn in the DOM. */
 export type Card =
   | { kind: "shot"; project: string; src: string; label: L; wide?: boolean }
-  | { kind: "cover"; project: string; label: L; colors: [string, string, string] };
+  | { kind: "cover"; project: string; label: L; colors: [string, string, string]; wide?: boolean };
 
 export const cards: Card[] = [
+  { kind: "shot", project: "lyristage", src: "work/lyristage-desktop.webp", label: { en: "Home: Daily Mix and Personal FM", zh: "首页：每日推荐与私人 FM" }, wide: true },
+  { kind: "shot", project: "lyristage", src: "work/lyristage-phone.webp", label: { en: "On a phone", zh: "手机上" } },
+  { kind: "cover", project: "lyristage", label: { en: "Word-by-word lyric stage", zh: "逐字高亮的歌词舞台" }, colors: ["#D63A73", "#7A2BD9", "#14070F"] },
   { kind: "shot", project: "windowverse", src: "work/windowverse-desk.webp", label: { en: "Three real windows on a desk", zh: "桌上三台显示器，都是真窗口" } },
   { kind: "shot", project: "windowverse", src: "work/windowverse-six.webp", label: { en: "Six screens, one in portrait", zh: "六台屏，其中一台竖放" } },
   { kind: "shot", project: "windowverse", src: "work/windowverse-figure.webp", label: { en: "The desk figurine", zh: "桌上的手办" } },
@@ -127,20 +145,18 @@ export const cards: Card[] = [
   { kind: "shot", project: "orbitoffice", src: "work/orbit-marketing.webp", label: { en: "Marketing agency", zh: "营销公司" }, wide: true },
   { kind: "shot", project: "dividend", src: "work/dividend-live.webp", label: { en: "Live dividends", zh: "实时股息" } },
   { kind: "shot", project: "dividend", src: "work/dividend-home.webp", label: { en: "Home", zh: "首页" } },
-  { kind: "shot", project: "dividend", src: "work/dividend-portfolio.webp", label: { en: "Portfolio", zh: "持仓" } },
   { kind: "shot", project: "meritai", src: "work/meritai-home.webp", label: { en: "Home", zh: "首页" } },
   { kind: "shot", project: "meritai", src: "work/meritai-packages.webp", label: { en: "Pick a package", zh: "选任务包" } },
   { kind: "shot", project: "meritai", src: "work/meritai-leaderboard.webp", label: { en: "Leaderboard", zh: "排行榜" } },
   { kind: "shot", project: "savvypiggy", src: "work/savvypiggy-home.webp", label: { en: "Home", zh: "首页" } },
   { kind: "shot", project: "savvypiggy", src: "work/savvypiggy-strategy.webp", label: { en: "Strategy", zh: "策略" } },
-  { kind: "shot", project: "savvypiggy", src: "work/savvypiggy-report.webp", label: { en: "Report", zh: "报表" } },
   { kind: "cover", project: "ml", label: { en: "Logistic regression", zh: "逻辑回归" }, colors: ["#3B2BD9", "#E0467C", "#12112B"] },
 ];
 
 export const skills: { group: L; items: string[] }[] = [
   { group: { en: "Server", zh: "服务端" }, items: ["Kotlin", "Spring Boot", "Hono", "PostgreSQL", "Prisma", "Cloudflare Workers", "MCP servers"] },
-  { group: { en: "Client", zh: "客户端" }, items: ["React 19", "React Native", "Expo", "TypeScript", "Next.js", "Electron", "Three.js", "Godot", "Jetpack Compose"] },
-  { group: { en: "Data", zh: "数据" }, items: ["Python", "pandas", "scikit-learn", "SQL (Oracle)", "Firebase"] },
+  { group: { en: "Client", zh: "客户端" }, items: ["React 19", "Vue 3", "React Native", "Expo", "TypeScript", "Next.js", "Electron", "Three.js", "Godot", "Jetpack Compose"] },
+  { group: { en: "Data", zh: "数据" }, items: ["Python", "pandas", "scikit-learn", "SQL (Oracle)", "Firebase", "Supabase"] },
   { group: { en: "Craft", zh: "工程" }, items: ["Java", "Vitest", "Zod", "Git", "GitHub Actions", "Gradle", "Figma"] },
 ];
 
@@ -163,6 +179,7 @@ export const ui = {
   source: { en: "Source", zh: "源码" },
   website: { en: "Website", zh: "网站" },
   download: { en: "Download", zh: "下载" },
+  webApp: { en: "Web app", zh: "网页版" },
   accrualTitle: { en: "Accrued since you arrived", zh: "你打开这页之后累积的" },
   accrualNote: {
     en: "This is the counter from Dividend Stream, with its own example: RM320.00 earned over 182 days. Nothing is written per second. Each client computes it from the clock, rounded down so an unpaid amount is never overstated.",

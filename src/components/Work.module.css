@@ -73,6 +73,24 @@
   font-size: clamp(64px, 7.5vw, 120px); line-height: 0.82; font-weight: 900; font-stretch: 125%;
   letter-spacing: -0.04em;
 }
+.lyric {
+  display: block;
+  font-size: clamp(30px, 3.2vw, 46px); line-height: 1.02; font-weight: 800; font-stretch: 84%;
+  letter-spacing: -0.02em;
+}
+.lyric span { color: rgba(255, 255, 255, 0.3); animation-duration: 4.6s; animation-timing-function: linear; animation-iteration-count: infinite; }
+.lyric span:nth-child(1) { animation-name: sing0; }
+@keyframes sing0 { 0%, 7.6% { color: rgba(255, 255, 255, 0.3); } 10.1%, 88% { color: #fff; } 96%, 100% { color: rgba(255, 255, 255, 0.3); } }
+.lyric span:nth-child(2) { animation-name: sing1; }
+@keyframes sing1 { 0%, 18.5% { color: rgba(255, 255, 255, 0.3); } 21.0%, 88% { color: #fff; } 96%, 100% { color: rgba(255, 255, 255, 0.3); } }
+.lyric span:nth-child(3) { animation-name: sing2; }
+@keyframes sing2 { 0%, 29.3% { color: rgba(255, 255, 255, 0.3); } 31.8%, 88% { color: #fff; } 96%, 100% { color: rgba(255, 255, 255, 0.3); } }
+.lyric span:nth-child(4) { animation-name: sing3; }
+@keyframes sing3 { 0%, 40.2% { color: rgba(255, 255, 255, 0.3); } 42.7%, 88% { color: #fff; } 96%, 100% { color: rgba(255, 255, 255, 0.3); } }
+.lyric span:nth-child(5) { animation-name: sing4; }
+@keyframes sing4 { 0%, 51.1% { color: rgba(255, 255, 255, 0.3); } 53.6%, 88% { color: #fff; } 96%, 100% { color: rgba(255, 255, 255, 0.3); } }
+.lyric span:nth-child(6) { animation-name: sing5; }
+@keyframes sing5 { 0%, 62.0% { color: rgba(255, 255, 255, 0.3); } 64.5%, 88% { color: #fff; } 96%, 100% { color: rgba(255, 255, 255, 0.3); } }
 .coverRows { display: grid; gap: 2px; font-size: clamp(18px, 1.6vw, 24px); font-weight: 600; font-stretch: 80%; }
 .coverRows span { border-top: 1px solid rgba(255, 255, 255, 0.35); padding-top: 6px; }
 
@@ -121,5 +139,6 @@
   .capLine { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 }
 @media (prefers-reduced-motion: reduce) {
+  .lyric span { animation: none; color: #fff; }
   .capKind > *, .capName span, .capLine, .stack, .idx b { animation: none; }
 }
