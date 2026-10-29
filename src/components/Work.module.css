@@ -94,6 +94,28 @@
 .coverRows { display: grid; gap: 2px; font-size: clamp(18px, 1.6vw, 24px); font-weight: 600; font-stretch: 80%; }
 .coverRows span { border-top: 1px solid rgba(255, 255, 255, 0.35); padding-top: 6px; }
 
+.lumoraTv { padding: clamp(18px, 2.4vw, 30px); }
+.luTiles { flex: 1; min-height: 0; margin: clamp(12px, 1.6vw, 22px) 0; display: grid; grid-template-columns: 1.25fr 1fr 1fr; align-items: end; gap: clamp(8px, 1vw, 14px); }
+.luTile {
+  position: relative; height: 100%; max-height: 100%; border-radius: 10px; overflow: hidden;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12) inset;
+}
+.luTile:not(:first-child) { height: 86%; }
+.luTile:first-child { outline: 2px solid #FFD27E; outline-offset: 3px; }
+.luTile i { position: absolute; left: 10px; bottom: 16px; font-style: normal; font-family: var(--f-mono); font-size: 11px; color: rgba(255, 255, 255, 0.9); }
+.luTile em { position: absolute; left: 10px; right: 10px; bottom: 8px; height: 3px; border-radius: 3px; background: rgba(255, 255, 255, 0.25); }
+.luTile em b { display: block; height: 100%; border-radius: 3px; background: #FFD27E; }
+.luBar { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.luNext { display: inline-flex; align-items: center; gap: 10px; font-size: clamp(14px, 1.2vw, 18px); font-weight: 600; }
+.luNext b {
+  display: grid; place-items: center; width: 34px; height: 34px; border-radius: 999px;
+  border: 2px solid #FFD27E; color: #FFD27E; font-family: var(--f-mono); font-size: 14px;
+}
+.luPill { font-family: var(--f-mono); font-size: 12px; padding: 7px 12px; border-radius: 999px; background: #FFD27E; color: #1A1206; }
+.luMark { container-type: inline-size; width: 100%; display: flex; flex-direction: column; align-items: flex-start; gap: 18px; }
+.luMark svg { width: 46%; height: auto; filter: drop-shadow(0 20px 40px rgba(232, 163, 58, 0.35)); }
+.luMark b { font-size: 27cqw; line-height: 0.86; font-weight: 800; font-stretch: 90%; letter-spacing: -0.04em; color: #FFE6B0; }
+
 /* ---------- caption ---------- */
 .caption {
   display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 24px; align-items: end;

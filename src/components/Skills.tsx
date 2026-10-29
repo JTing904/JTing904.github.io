@@ -9,7 +9,7 @@ import s from "./Skills.module.css";
 const ROWS = [
   ["Kotlin", "Spring Boot", "Hono", "PostgreSQL", "Prisma", "Flyway", "Jetpack Compose"],
   ["React 19", "React Native", "Expo", "TypeScript", "Next.js", "Capacitor", "Firebase", "Cloudflare"],
-  ["Python", "Godot", "Three.js", "Electron", "pandas", "scikit-learn", "SQL", "Java", "Figma"],
+  ["Python", "Flutter", "Godot", "Three.js", "Electron", "pandas", "scikit-learn", "SQL", "Java", "Figma"],
 ];
 
 /** Three bands that drift on their own and surge, skewing, with scroll speed. */

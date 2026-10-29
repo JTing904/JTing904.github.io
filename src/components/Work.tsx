@@ -43,6 +43,44 @@ function Cover({ card }: { card: Extract<Card, { kind: "cover" }> }) {
       </div>
     );
   }
+  if (card.project === "lumora" && card.wide) {
+    const tiles = [
+      { g: "linear-gradient(135deg,#F2B04A,#7A4A14)", p: 72, t: "S2 · E7" },
+      { g: "linear-gradient(135deg,#C9653A,#3A1A10)", p: 35, t: "S1 · E3" },
+      { g: "linear-gradient(135deg,#E8C27A,#5A4020)", p: 88, t: "Film" },
+    ];
+    return (
+      <div className={`${s.cover} ${s.lumoraTv}`} style={style}>
+        <span className="eyebrow">Continue watching</span>
+        <span className={s.luTiles}>
+          {tiles.map((x, i) => (
+            <span key={i} className={s.luTile} style={{ background: x.g }}>
+              <i>{x.t}</i>
+              <em><b style={{ width: `${x.p}%` }} /></em>
+            </span>
+          ))}
+        </span>
+        <span className={s.luBar}>
+          <span className={s.luNext}><b>5</b> Next episode</span>
+          <span className={s.luPill}>Skip intro</span>
+        </span>
+      </div>
+    );
+  }
+  if (card.project === "lumora")
+    return (
+      <div className={s.cover} style={style}>
+        <span className="eyebrow">Luminous + Aura</span>
+        <span className={s.luMark}>
+          <svg viewBox="266 184 512 634" aria-hidden="true">
+            <path fill="#9A6B1F" d="M296 184h124a30 30 0 0 1 30 30v420h298a30 30 0 0 1 30 30v124a30 30 0 0 1-30 30H296a30 30 0 0 1-30-30V214a30 30 0 0 1 30-30z" />
+            <path fill="#FFD27E" d="M296 184h124a30 30 0 0 1 30 30v420h40L306 818h-10a30 30 0 0 1-30-30V214a30 30 0 0 1 30-30z" />
+          </svg>
+          <b>Lumora</b>
+        </span>
+        <span className="eyebrow">Films · Series · Anime · Live TV</span>
+      </div>
+    );
   return null;
 }
 

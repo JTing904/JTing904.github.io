@@ -39,6 +39,20 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    id: "lumora",
+    name: "Lumora",
+    year: "2026",
+    kind: { en: "Windows · Android · Android TV · open source · invite-only", zh: "Windows · Android · Android TV · 开源 · 邀请制" },
+    line: {
+      en: "Films, series, anime and live TV in one Chinese-first player. Details from TMDb, continue watching, a next-episode countdown, skip intro and credits, picks that learn your taste, new-episode alerts, history synced across devices, and every button reachable from a TV remote.",
+      zh: "把电影、电视剧、动漫和直播放进一个中文优先的播放器。TMDb 中文资料、继续观看、下一集倒数、跳过片头片尾、按口味推荐、新集提醒、多设备同步观看记录，每个按钮都能用电视遥控器操作。",
+    },
+    stack: ["Flutter", "Dart", "Supabase", "TMDb API", "Android TV"],
+    href: "https://github.com/JTing904/Lumora",
+    site: "https://jting904.github.io/Lumora",
+    download: "https://github.com/JTing904/Lumora/releases/latest",
+  },
+  {
     id: "lyristage",
     name: "LyriStage",
     year: "2026",
@@ -50,6 +64,7 @@ export const projects: Project[] = [
     stack: ["Vue 3", "Electron", "Capacitor", "Supabase"],
     href: "https://github.com/JTing904/LyriStage",
     site: "https://jting904.github.io/LyriStage-releases",
+    download: "https://github.com/JTing904/LyriStage/releases/latest",
     app: "https://lyristage.vercel.app",
   },
   {
@@ -134,6 +149,8 @@ export type Card =
   | { kind: "cover"; project: string; label: L; colors: [string, string, string]; wide?: boolean };
 
 export const cards: Card[] = [
+  { kind: "cover", project: "lumora", label: { en: "Continue watching, from the sofa", zh: "在沙发上继续观看" }, colors: ["#E8A33A", "#5A3A12", "#0B0A09"], wide: true },
+  { kind: "cover", project: "lumora", label: { en: "Windows, Android and Android TV", zh: "Windows、Android 和 Android TV" }, colors: ["#FFD27E", "#9A6B1F", "#0B0A0C"] },
   { kind: "shot", project: "lyristage", src: "work/lyristage-desktop.webp", label: { en: "Home: Daily Mix and Personal FM", zh: "首页：每日推荐与私人 FM" }, wide: true },
   { kind: "shot", project: "lyristage", src: "work/lyristage-phone.webp", label: { en: "On a phone", zh: "手机上" } },
   { kind: "cover", project: "lyristage", label: { en: "Word-by-word lyric stage", zh: "逐字高亮的歌词舞台" }, colors: ["#D63A73", "#7A2BD9", "#14070F"] },
@@ -155,7 +172,7 @@ export const cards: Card[] = [
 
 export const skills: { group: L; items: string[] }[] = [
   { group: { en: "Server", zh: "服务端" }, items: ["Kotlin", "Spring Boot", "Hono", "PostgreSQL", "Prisma", "Cloudflare Workers", "MCP servers"] },
-  { group: { en: "Client", zh: "客户端" }, items: ["React 19", "Vue 3", "React Native", "Expo", "TypeScript", "Next.js", "Electron", "Three.js", "Godot", "Jetpack Compose"] },
+  { group: { en: "Client", zh: "客户端" }, items: ["React 19", "Vue 3", "React Native", "Expo", "TypeScript", "Next.js", "Electron", "Three.js", "Godot", "Flutter", "Jetpack Compose"] },
   { group: { en: "Data", zh: "数据" }, items: ["Python", "pandas", "scikit-learn", "SQL (Oracle)", "Firebase", "Supabase"] },
   { group: { en: "Craft", zh: "工程" }, items: ["Java", "Vitest", "Zod", "Git", "GitHub Actions", "Gradle", "Figma"] },
 ];
